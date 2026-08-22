@@ -9,7 +9,7 @@ import AuthProvider from "@/providers/auth-provider";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "FixItNow",
@@ -22,12 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn("font-sans", geist.variable)}
+    >
       <body suppressHydrationWarning>
         <ThemeProvider>
           <QueryProvider>
             <AuthProvider>
-              {children}
+              <ThemeProvider>{children}</ThemeProvider>
               <Toaster richColors position="top-right" />
             </AuthProvider>
           </QueryProvider>

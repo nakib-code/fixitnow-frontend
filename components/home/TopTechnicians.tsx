@@ -1,163 +1,191 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
-import { Wrench } from "lucide-react";
+
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CheckCircle2,
+  Sparkles,
+  Wrench,
+} from "lucide-react";
 
 import { useTechnicians } from "@/hooks/use-technicians";
 import { Technician } from "@/types/technician";
 
-
 export default function TopTechnicians() {
-
   const {
-    data: technicians,
+    data: technicians = [],
     isLoading,
     isError,
   } = useTechnicians();
 
-
   if (isLoading) {
     return (
-      <section className="py-16 text-center">
-        Loading technicians...
+      <section className="bg-muted/20 py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Header Skeleton */}
+          <div className="text-center">
+            <div className="mx-auto h-6 w-40 animate-pulse rounded-md bg-muted" />
+            <div className="mx-auto mt-3 h-9 w-64 animate-pulse rounded-lg bg-muted" />
+            <div className="mx-auto mt-3 h-4 w-80 max-w-full animate-pulse rounded bg-muted" />
+          </div>
+
+          {/* Cards Skeleton */}
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-64 animate-pulse rounded-3xl bg-muted"
+              />
+            ))}
+          </div>
+        </div>
       </section>
     );
   }
-
 
   if (isError) {
     return (
-      <section className="py-16 text-center text-red-500">
-        Failed to load technicians
+      <section className="bg-muted/20 py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-destructive/10">
+            <Wrench className="size-5 text-destructive" />
+          </div>
+
+          <h2 className="mt-4 text-lg font-semibold text-foreground">
+            Unable to load technicians
+          </h2>
+
+          <p className="mt-1 text-sm text-muted-foreground">
+            Please try again later.
+          </p>
+        </div>
       </section>
     );
   }
 
-
-  if (!technicians || technicians.length === 0) {
-    return (
-      <section className="py-16 text-center">
-        No technicians found
-      </section>
-    );
+  if (technicians.length === 0) {
+    return null;
   }
 
+  const topTechnicians = technicians.slice(0, 4);
 
   return (
-    <section className="container mx-auto px-4 py-16">
+    <section className="relative overflow-hidden bg-muted/20 py-16 sm:py-24">
+      {/* Decorative Background */}
+      <div className="pointer-events-none absolute -left-32 top-20 size-72 rounded-full bg-primary/5 blur-3xl" />
 
-      <div className="mb-10 text-center">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary">
+              <Sparkles className="size-3.5" />
+              Trusted Professionals
+            </div>
 
-        <h2 className="text-3xl font-bold">
-          Top Technicians
-        </h2>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Meet our
+              <span className="text-primary"> experts.</span>
+            </h2>
 
-        <p className="mt-2 text-gray-500">
-          Meet our professional technicians
-        </p>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
+              Skilled and trusted professionals ready to help you
+              with your home service needs.
+            </p>
+          </div>
 
-      </div>
+          {/* Desktop View All */}
+          <Link
+            href="/technicians"
+            className="group hidden items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/30 hover:text-primary sm:inline-flex"
+          >
+            View all technicians
 
+            <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </div>
 
-      <div className="
-        grid
-        gap-6
-        sm:grid-cols-2
-        lg:grid-cols-4
-      ">
+        {/* Technician Cards */}
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+          {topTechnicians.map((tech: Technician) => (
+            <Link
+              key={tech.id}
+              href={`/technicians/${tech.id}`}
+              className="group relative overflow-hidden rounded-3xl border border-border bg-card p-4 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5 sm:p-6"
+            >
+              {/* Profile Image */}
+              <div className="relative mx-auto w-fit">
+                {tech.profileImg ? (
+                  <Image
+                    src={tech.profileImg}
+                    alt={tech.name}
+                    width={112}
+                    height={112}
+                    className="size-20 rounded-2xl object-cover ring-4 ring-muted transition-transform duration-300 group-hover:scale-105 sm:size-28"
+                  />
+                ) : (
+                  <div className="flex size-20 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-4 ring-muted transition-transform duration-300 group-hover:scale-105 sm:size-28">
+                    <Wrench className="size-8 sm:size-10" />
+                  </div>
+                )}
 
-        {
-          technicians.slice(0, 4).map(
-            (tech: Technician) => (
+                {/* Verified Badge */}
+                <div className="absolute -right-2 -top-2 flex size-7 items-center justify-center rounded-full border-2 border-card bg-primary text-primary-foreground shadow-sm">
+                  <CheckCircle2 className="size-3.5" />
+                </div>
+              </div>
 
-              <div
-                key={tech.id}
-                className="
-                  rounded-xl
-                  border
-                  bg-white
-                  p-6
-                  text-center
-                  shadow-sm
-                  transition
-                  hover:shadow-lg
-                "
-              >
-
-                {
-                  tech.profileImg ? (
-
-                    <Image
-                      src={tech.profileImg}
-                      alt={tech.name}
-                      width={100}
-                      height={100}
-                      className="
-                        mx-auto
-                        h-24
-                        w-24
-                        rounded-full
-                        object-cover
-                      "
-                    />
-
-                  ) : (
-
-                    <div
-                      className="
-                        mx-auto
-                        flex
-                        h-24
-                        w-24
-                        items-center
-                        justify-center
-                        rounded-full
-                        bg-blue-100
-                      "
-                    >
-                      <Wrench className="text-blue-600" />
-                    </div>
-
-                  )
-                }
-
-
-
-                <h3 className="mt-4 font-semibold">
+              {/* Technician Info */}
+              <div className="mt-5 text-center sm:mt-6">
+                <h3 className="line-clamp-1 text-sm font-bold text-foreground sm:text-base">
                   {tech.name}
                 </h3>
 
-
-                <p className="mt-1 text-sm text-gray-500">
-                  {tech.email}
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Professional Technician
                 </p>
-
-
-                <span
-                  className="
-                    mt-3
-                    inline-block
-                    rounded-full
-                    bg-green-100
-                    px-3
-                    py-1
-                    text-xs
-                    text-green-700
-                  "
-                >
-                  {tech.status}
-                </span>
-
-
               </div>
 
-            )
-          )
-        }
+              {/* Status */}
+              <div className="mt-4 flex justify-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/50 px-2.5 py-1 text-[10px] font-semibold capitalize text-muted-foreground sm:text-xs">
+                  <span
+                    className={`size-1.5 rounded-full ${
+                      tech.status?.toLowerCase() === "available"
+                        ? "bg-green-500"
+                        : "bg-muted-foreground"
+                    }`}
+                  />
 
+                  {tech.status}
+                </span>
+              </div>
 
+              {/* View Profile */}
+              <div className="mt-5 flex items-center justify-center gap-1 text-xs font-semibold text-muted-foreground transition-colors group-hover:text-primary">
+                View profile
+
+                <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Mobile View All */}
+        <div className="mt-6 flex justify-center sm:hidden">
+          <Link
+            href="/technicians"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-primary"
+          >
+            View all technicians
+
+            <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
-
     </section>
   );
 }

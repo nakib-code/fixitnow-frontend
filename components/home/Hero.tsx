@@ -1,82 +1,185 @@
 import Link from "next/link";
-import { ArrowRight, Wrench, ShieldCheck, Star } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Search,
+  ShieldCheck,
+  Star,
+  Wrench,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      <div className="container mx-auto grid min-h-[90vh] items-center gap-12 px-4 py-16 lg:grid-cols-2">
-        {/* Left */}
-        <div>
-          <span className="inline-flex items-center rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700">
-            🔧 Trusted Home Service Marketplace
-          </span>
+    <section className="relative overflow-hidden bg-background">
+      {/* Background Decoration */}
+      <div className="pointer-events-none absolute -left-32 top-20 size-72 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 top-40 size-80 rounded-full bg-accent/15 blur-3xl" />
 
-          <h1 className="mt-6 text-5xl font-extrabold leading-tight lg:text-6xl">
-            Find Trusted
-            <span className="block text-blue-600">
-              Home Service Experts
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
+        {/* Left Content */}
+        <div className="max-w-2xl">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-3.5 py-2 text-xs font-semibold text-primary sm:text-sm">
+            <span className="flex size-5 items-center justify-center rounded-full bg-primary/10">
+              <Wrench className="size-3.5" />
+            </span>
+
+            Trusted Home Service Marketplace
+          </div>
+
+          {/* Heading */}
+          <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Your Home,
+            <span className="block text-primary">
+              Our Expertise.
             </span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg text-gray-600">
-            Book verified professionals for plumbing, electrical,
-            AC repair, cleaning, painting and more. Fast booking,
-            secure payments and trusted technicians.
+          {/* Description */}
+          <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+            Book trusted professionals for plumbing, electrical,
+            AC repair, cleaning, painting, and more — all in one place.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          {/* Search */}
+          <div className="mt-7 flex max-w-xl items-center gap-3 rounded-2xl border border-border bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+              <Search className="size-5 text-muted-foreground" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm text-muted-foreground">
+                What service do you need?
+              </p>
+              <p className="truncate text-xs text-muted-foreground/70">
+                Search plumbing, cleaning, electrical...
+              </p>
+            </div>
+
             <Link href="/services">
-              <Button size="lg">
+              <Button
+                size="sm"
+                className="hidden rounded-xl sm:flex"
+              >
+                Search
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile CTA */}
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <Link href="/services" className="flex-1 sm:flex-none">
+              <Button
+                size="lg"
+                className="h-12 w-full gap-2 rounded-xl px-6 sm:w-auto"
+              >
                 Browse Services
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="size-4" />
               </Button>
             </Link>
 
-            <Link href="/auth/register">
-              <Button variant="outline" size="lg">
+            <Link href="/auth/register" className="flex-1 sm:flex-none">
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-12 w-full rounded-xl px-6 sm:w-auto"
+              >
                 Get Started
               </Button>
             </Link>
           </div>
 
-          <div className="mt-12 grid grid-cols-3 gap-6">
-            <div>
-              <h3 className="text-3xl font-bold text-blue-600">500+</h3>
-              <p className="text-gray-500">Technicians</p>
+          {/* Trust Points */}
+          <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground sm:text-sm">
+              <CheckCircle2 className="size-4 text-green-500" />
+              Verified Technicians
             </div>
 
-            <div>
-              <h3 className="text-3xl font-bold text-blue-600">1500+</h3>
-              <p className="text-gray-500">Services</p>
+            <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground sm:text-sm">
+              <ShieldCheck className="size-4 text-primary" />
+              Secure Payments
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-10 grid grid-cols-3 divide-x divide-border border-y border-border py-5">
+            <div className="pr-3">
+              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
+                500+
+              </h3>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                Technicians
+              </p>
             </div>
 
-            <div>
-              <h3 className="text-3xl font-bold text-blue-600">10K+</h3>
-              <p className="text-gray-500">Customers</p>
+            <div className="px-3">
+              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
+                1500+
+              </h3>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                Services
+              </p>
+            </div>
+
+            <div className="pl-3">
+              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
+                10K+
+              </h3>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                Customers
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Right */}
-        <div className="relative flex justify-center">
-          <div className="flex h-[500px] w-[500px] items-center justify-center rounded-full bg-blue-100">
-            <Wrench className="h-44 w-44 text-blue-600" />
+        {/* Right Visual */}
+        <div className="relative mx-auto hidden w-full max-w-lg lg:block">
+          {/* Main Circle */}
+          <div className="relative mx-auto flex aspect-square max-w-[460px] items-center justify-center rounded-full border border-primary/10 bg-primary/5">
+            <div className="absolute inset-8 rounded-full border border-primary/10 bg-primary/5" />
+
+            <div className="relative flex size-44 items-center justify-center rounded-[2rem] bg-primary shadow-2xl shadow-primary/20">
+              <Wrench className="size-24 text-primary-foreground" />
+            </div>
+
+            {/* Orange Accent */}
+            <div className="absolute right-12 top-16 size-5 rounded-full bg-accent shadow-lg shadow-accent/30" />
+            <div className="absolute bottom-20 left-14 size-3 rounded-full bg-primary/40" />
           </div>
 
-          <div className="absolute left-0 top-20 rounded-xl bg-white p-4 shadow-xl">
-            <ShieldCheck className="mx-auto h-8 w-8 text-green-500" />
-            <p className="mt-2 text-sm font-semibold">
-              Verified Professionals
-            </p>
+          {/* Verified Card */}
+          <div className="absolute left-0 top-16 flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-xl shadow-black/5">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-green-500/10">
+              <ShieldCheck className="size-5 text-green-500" />
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-foreground">
+                Verified Professionals
+              </p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Trusted & experienced
+              </p>
+            </div>
           </div>
 
-          <div className="absolute bottom-12 right-0 rounded-xl bg-white p-4 shadow-xl">
-            <Star className="mx-auto h-8 w-8 fill-yellow-400 text-yellow-400" />
-            <p className="mt-2 text-sm font-semibold">
-              4.9 Average Rating
-            </p>
+          {/* Rating Card */}
+          <div className="absolute bottom-14 right-0 flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-xl shadow-black/5">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-accent/15">
+              <Star className="size-5 fill-accent text-accent" />
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-foreground">
+                4.9 / 5 Rating
+              </p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                From happy customers
+              </p>
+            </div>
           </div>
         </div>
       </div>
