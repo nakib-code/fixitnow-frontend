@@ -35,6 +35,18 @@ export const deleteUser = async (id: string) => {
 };
 
 // ==============================
+// Services
+// ==============================
+
+export const getAllServices = async () => {
+  const { data } = await axiosInstance.get(
+    "/services"
+  );
+
+  return data.data;
+};
+
+// ==============================
 // Bookings
 // ==============================
 
