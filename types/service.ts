@@ -2,24 +2,26 @@ export interface Service {
   id: string;
   title: string;
   description: string;
-  price: string;
+  price: number | string;
   duration: number;
   isAvailable: boolean;
+
+  image?: string | null;
+  imagePublicId?: string | null;
+
   technicianId: string;
   categoryId: string;
-  createdAt: string;
-  updatedAt: string;
 
   category: {
     id: string;
     name: string;
     slug: string;
-    icon: string | null;
+    icon?: string | null;
   };
 
   technician: {
     id: string;
-    bio: string;
+    bio?: string | null;
     experience: number;
     location: string;
     averageRating: number;
@@ -28,17 +30,21 @@ export interface Service {
     user: {
       id: string;
       name: string;
-      email: string;
+      email?: string;
       phone?: string | null;
-      profileImg: string | null;
+      profileImg?: string | null;
     };
   };
-}
 
+  createdAt: string;
+  updatedAt: string;
+}
 export interface TCreateService {
   title: string;
   description: string;
-  categoryId: string;
   price: number;
   duration: number;
+  categoryId: string;
+  isAvailable?: boolean;
+  image?: File;
 }

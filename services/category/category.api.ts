@@ -9,12 +9,24 @@ export const getCategories = async (): Promise<ICategory[]> => {
 
 export const createCategory = async (payload: {
   name: string;
-  icon?: string;
+  icon?: File;
   description?: string;
 }) => {
+  const formData = new FormData();
+
+  formData.append("name", payload.name);
+
+  if (payload.description) {
+    formData.append("description", payload.description);
+  }
+
+  if (payload.icon) {
+    formData.append("icon", payload.icon);
+  }
+
   const { data } = await axiosInstance.post(
     "/categories",
-    payload
+    formData
   );
 
   return data.data;
@@ -27,13 +39,25 @@ export const updateCategory = async ({
   id: string;
   payload: {
     name: string;
-    icon?: string;
+    icon?: File;
     description?: string;
   };
 }) => {
+  const formData = new FormData();
+
+  formData.append("name", payload.name);
+
+  if (payload.description) {
+    formData.append("description", payload.description);
+  }
+
+  if (payload.icon) {
+    formData.append("icon", payload.icon);
+  }
+
   const { data } = await axiosInstance.patch(
     `/categories/${id}`,
-    payload
+    formData
   );
 
   return data.data;

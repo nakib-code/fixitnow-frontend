@@ -1,27 +1,35 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import {
+  Loader2,
+  LogOut,
+  Menu,
+} from "lucide-react";
+
 import { useRouter } from "next/navigation";
+
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useLogout } from "@/hooks/useLogout";
 
+type Props = {
+  onMenuClick: () => void;
+};
 
-export default function DashboardNavbar() {
+export default function DashboardNavbar({
+  onMenuClick,
+}: Props) {
   const router = useRouter();
 
-  const {
-    user,
-    isLoading,
-  } = useCurrentUser();
+  const { user, isLoading } = useCurrentUser();
 
   const {
     mutate: logout,
     isPending,
   } = useLogout();
-
 
   const handleLogout = () => {
     logout(undefined, {
@@ -33,7 +41,6 @@ export default function DashboardNavbar() {
       },
     });
   };
-
 
   const dashboardTitle = (() => {
     switch (user?.role) {
@@ -51,68 +58,109 @@ export default function DashboardNavbar() {
     }
   })();
 
+  const userName = user?.name ?? "User";
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-white px-6">
+    <header className="sticky top-0 z-40 border-b bg-white/95 backdrop-blur">
+      <div className="flex h-16 items-center justify-between px-3 sm:px-5 lg:px-8">
 
-      <div>
-        <h2 className="text-xl font-semibold">
-          {isLoading ? "Loading..." : dashboardTitle}
-        </h2>
+        {/* Left */}
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
 
-        <p className="text-sm text-gray-500">
-          Welcome back!
-        </p>
-      </div>
+          {/* Mobile Menu Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={onMenuClick}
+            className="md:hidden"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
 
-
-      <div className="flex items-center gap-4">
-
-        <div className="text-right">
-
-          <p className="font-medium">
-            {
-              isLoading
+          <div className="min-w-0">
+            <h1 className="truncate text-base font-semibold text-slate-900 sm:text-lg">
+              {isLoading
                 ? "Loading..."
-                : user?.name ?? "User"
-            }
-          </p>
+                : dashboardTitle}
+            </h1>
 
-
-          <p className="text-sm text-gray-500">
-            {user?.email ?? ""}
-          </p>
-
-
-          <p className="text-sm capitalize text-gray-500">
-            {user?.role?.toLowerCase() ?? ""}
-          </p>
-
+            <p className="hidden text-xs text-slate-500 sm:block">
+              Welcome back!
+            </p>
+          </div>
         </div>
 
+        {/* Right */}
+        <div className="flex items-center gap-2 sm:gap-4">
 
-        <Button
-          variant="destructive"
-          onClick={handleLogout}
-          disabled={isPending}
-        >
+          {/* Avatar */}
+          <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-primary">
+            {user?.profileImg ? (
+              <img
+                src={user.profileImg}
+                alt={userName}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-primary-foreground">
+                {userName.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
 
-          {
-            isPending ? (
+          {/* User info */}
+          <div className="hidden sm:block">
+            <p className="max-w-40 truncate text-sm font-medium">
+              {isLoading
+                ? "Loading..."
+                : userName}
+            </p>
+
+            <p className="max-w-48 truncate text-xs text-slate-500">
+              {user?.email ?? ""}
+            </p>
+          </div>
+
+          {/* Desktop Logout */}
+          <Button
+            type="button"
+            variant="destructive"
+            size="sm"
+            onClick={handleLogout}
+            disabled={isPending}
+            className="hidden sm:inline-flex"
+          >
+            {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Logging out...
               </>
             ) : (
-              "Logout"
-            )
-          }
+              <>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </>
+            )}
+          </Button>
 
-        </Button>
-
-
+          {/* Mobile Logout */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            disabled={isPending}
+            className="sm:hidden"
+          >
+            {isPending ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <LogOut className="h-5 w-5" />
+            )}
+          </Button>
+        </div>
       </div>
-
     </header>
   );
 }

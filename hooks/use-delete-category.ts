@@ -11,11 +11,15 @@ export const useDeleteCategory = () => {
   return useMutation({
     mutationFn: deleteCategory,
 
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("Category deleted successfully");
 
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ["admin-categories"],
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["categories"],
       });
     },
 

@@ -4,7 +4,10 @@ import ServiceCard from "@/app/dashboard/technician/services/_components/Service
 import { useMyServices } from "@/hooks/use-my-services";
 
 export default function MyServices() {
-  const { data: services, isLoading } = useMyServices();
+  const {
+    data: services,
+    isLoading,
+  } = useMyServices();
 
   if (isLoading) {
     return (

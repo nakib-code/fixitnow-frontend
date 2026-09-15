@@ -14,16 +14,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+import { Button } from "@/components/ui/button";
+
 import { useDeleteCategory } from "@/hooks/use-delete-category";
 
 interface Props {
   id: string;
 }
 
-const DeleteCategoryDialog = ({ id }: Props) => {
+const DeleteCategoryDialog = ({
+  id,
+}: Props) => {
   const [open, setOpen] = useState(false);
 
-  const { mutate, isPending } = useDeleteCategory();
+  const { mutate, isPending } =
+    useDeleteCategory();
 
   const handleDelete = () => {
     mutate(id, {
@@ -38,7 +43,11 @@ const DeleteCategoryDialog = ({ id }: Props) => {
       open={open}
       onOpenChange={setOpen}
     >
-      <AlertDialogTrigger>
+      <AlertDialogTrigger
+        render={
+          <Button className="btn-danger" />
+        }
+      >
         Delete
       </AlertDialogTrigger>
 
@@ -50,7 +59,8 @@ const DeleteCategoryDialog = ({ id }: Props) => {
 
           <AlertDialogDescription>
             This action cannot be undone.
-            If this category has services, it cannot be deleted.
+            If this category has services, it
+            cannot be deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -63,7 +73,9 @@ const DeleteCategoryDialog = ({ id }: Props) => {
             onClick={handleDelete}
             disabled={isPending}
           >
-            {isPending ? "Deleting..." : "Delete"}
+            {isPending
+              ? "Deleting..."
+              : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import {
   Dialog,
   DialogContent,
@@ -17,7 +18,7 @@ import { useCreateCategory } from "@/hooks/use-create-category";
 
 type FormValues = {
   name: string;
-  icon?: string;
+  icon?: FileList;
   description?: string;
 };
 
@@ -33,18 +34,29 @@ const CreateCategoryDialog = () => {
   } = useForm<FormValues>();
 
   const onSubmit = (data: FormValues) => {
-    mutate(data, {
-      onSuccess: () => {
-        reset();
-        setOpen(false);
+    const file = data.icon?.[0];
+
+    mutate(
+      {
+        name: data.name,
+        description: data.description,
+        icon: file,
       },
-    });
+      {
+        onSuccess: () => {
+          reset();
+          setOpen(false);
+        },
+      }
+    );
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger >
-         Add Category
+      <DialogTrigger
+        render={<Button className="btn-primary" />}
+      >
+        Add Category
       </DialogTrigger>
 
       <DialogContent>
@@ -58,6 +70,7 @@ const CreateCategoryDialog = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-4"
         >
+          {/* Name */}
           <Input
             placeholder="Category Name"
             {...register("name", {
@@ -65,19 +78,23 @@ const CreateCategoryDialog = () => {
             })}
           />
 
+          {/* Icon */}
           <Input
-            placeholder="Icon URL (Optional)"
+            type="file"
+            accept="image/*"
             {...register("icon")}
           />
 
+          {/* Description */}
           <Input
             placeholder="Description (Optional)"
             {...register("description")}
           />
 
+          {/* Submit */}
           <Button
             type="submit"
-            className="w-full"
+            className="btn-primary w-full"
             disabled={isPending}
           >
             {isPending

@@ -19,27 +19,26 @@ import { useUpdateCategory } from "@/hooks/use-update-category";
 type Category = {
   id: string;
   name: string;
-  icon?: string;
-  description?: string;
+  icon?: string | null;
+  description?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
-interface Props {
-  category: Category;
-}
+type Props = {
+  category?: Category;
+};
 
 type FormValues = {
   name: string;
-  icon?: string;
+  icon?: FileList;
   description?: string;
 };
 
-const UpdateCategoryDialog = ({
-  category,
-}: Props) => {
+const UpdateCategoryDialog = ({ category }: Props) => {
   const [open, setOpen] = useState(false);
 
-  const { mutate, isPending } =
-    useUpdateCategory();
+  const { mutate, isPending } = useUpdateCategory();
 
   const {
     register,
@@ -48,44 +47,56 @@ const UpdateCategoryDialog = ({
   } = useForm<FormValues>();
 
   useEffect(() => {
-    if (open) {
-      reset({
-        name: category.name,
-        icon: category.icon || "",
-        description:
-          category.description || "",
-      });
+    if (!open || !category) {
+      return;
     }
+
+    reset({
+      name: category.name,
+      description: category.description ?? "",
+    });
   }, [open, category, reset]);
 
   const onSubmit = (data: FormValues) => {
+    if (!category) {
+      return;
+    }
+
+    const file = data.icon?.[0];
+
     mutate(
       {
         id: category.id,
-        payload: data,
+        payload: {
+          name: data.name,
+          description: data.description,
+          icon: file,
+        },
       },
       {
         onSuccess: () => {
           setOpen(false);
+          reset();
         },
       }
     );
   };
 
+  if (!category) {
+    return null;
+  }
+
   return (
-    <Dialog
-      open={open}
-      onOpenChange={setOpen}
-    >
-      <DialogTrigger >
-          Edit
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        render={<Button className="btn-outline" />}
+      >
+        Edit
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Update Category
-          </DialogTitle>
+          <DialogTitle>Update Category</DialogTitle>
         </DialogHeader>
 
         <form
@@ -99,8 +110,23 @@ const UpdateCategoryDialog = ({
             })}
           />
 
+          {category.icon && (
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Current Icon
+              </p>
+
+              <img
+                src={category.icon}
+                alt={category.name}
+                className="h-16 w-16 rounded-md object-cover"
+              />
+            </div>
+          )}
+
           <Input
-            placeholder="Icon URL"
+            type="file"
+            accept="image/*"
             {...register("icon")}
           />
 
@@ -111,12 +137,10 @@ const UpdateCategoryDialog = ({
 
           <Button
             type="submit"
-            className="w-full"
+            className="btn-primary w-full"
             disabled={isPending}
           >
-            {isPending
-              ? "Updating..."
-              : "Update Category"}
+            {isPending ? "Updating..." : "Update Category"}
           </Button>
         </form>
       </DialogContent>

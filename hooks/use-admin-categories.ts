@@ -2,8 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { getCategories } from "@/services/admin/admin.api";
 import { ICategory } from "@/types/category";
+import { getCategories } from "@/services/category/category.api";
 
 export const useAdminCategories = () => {
   return useQuery<ICategory[]>({

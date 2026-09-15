@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 
 import { TechnicianProfile } from "@/types/technician";
 import { useUpdateTechnicianProfile } from "@/hooks/use-update-technician-profile";
-import { uploadImageToCloudinary } from "@/lib/cloudinary";
+import { updateProfileImage } from "@/services/user/user.api";
 
 interface Props {
   profile: TechnicianProfile;
@@ -22,27 +22,15 @@ type FormValues = {
   location: string;
 };
 
-export default function ProfileForm({
-  profile,
-}: Props) {
+export default function ProfileForm({ profile }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState(profile.user.profileImg || "");
 
-  const [image, setImage] = useState(
-    () => profile.user.profileImg || ""
-  );
+  const { mutate, isPending } = useUpdateTechnicianProfile();
 
-  const {
-    mutate,
-    isPending,
-  } = useUpdateTechnicianProfile();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm<FormValues>({
+  const { register, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: {
       bio: profile.bio || "",
       experience: profile.experience,
@@ -58,53 +46,45 @@ export default function ProfileForm({
     });
   }, [profile, reset]);
 
-  const handleImageUpload = async (
-    file: File
-  ) => {
+  const handleImageUpload = async (file: File) => {
     try {
       setUploading(true);
 
-      const url =
-        await uploadImageToCloudinary(file);
+      const updatedUser = await updateProfileImage(file);
 
-      setImage(url);
+      setImage(updatedUser.profileImg || "");
     } catch (error) {
-      console.error(error);
+      console.error("Profile image upload failed:", error);
     } finally {
       setUploading(false);
     }
   };
 
-  const onSubmit = (
-    values: FormValues
-  ) => {
-    mutate({
-      ...values,
-      profileImg: image,
-    });
+  const onSubmit = (values: FormValues) => {
+    mutate(values);
   };
 
   return (
     <div className="rounded-xl border bg-white p-6">
-      <h2 className="mb-6 text-2xl font-bold">
-        Edit Profile
-      </h2>
+      <h2 className="mb-6 text-2xl font-bold">Edit Profile</h2>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Profile Image */}
         <div className="flex flex-col items-center gap-4">
           <div className="relative h-36 w-36 overflow-hidden rounded-full border">
-            <Image
-              src={
-                image ||
-                "https://placehold.co/300x300/png?text=User"
-              }
-              alt="Profile"
-              fill
-              className="object-cover"
-            />
+            {image ? (
+              <Image
+                src={image}
+                alt="Profile"
+                fill
+                sizes="144px"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-muted-foreground">
+                {profile.user.name?.charAt(0).toUpperCase()}
+              </div>
+            )}
           </div>
 
           <Input
@@ -113,12 +93,13 @@ export default function ProfileForm({
             accept="image/*"
             className="hidden"
             onChange={(e) => {
-              const file =
-                e.target.files?.[0];
+              const file = e.target.files?.[0];
 
               if (!file) return;
 
               handleImageUpload(file);
+
+              e.target.value = "";
             }}
           />
 
@@ -126,9 +107,7 @@ export default function ProfileForm({
             type="button"
             variant="outline"
             disabled={uploading}
-            onClick={() =>
-              fileInputRef.current?.click()
-            }
+            onClick={() => fileInputRef.current?.click()}
           >
             {uploading ? (
               <>
@@ -144,10 +123,9 @@ export default function ProfileForm({
           </Button>
         </div>
 
+        {/* Bio */}
         <div>
-          <label className="mb-2 block">
-            Bio
-          </label>
+          <label className="mb-2 block">Bio</label>
 
           <textarea
             rows={5}
@@ -156,39 +134,33 @@ export default function ProfileForm({
           />
         </div>
 
+        {/* Experience */}
         <div>
-          <label className="mb-2 block">
-            Experience
-          </label>
+          <label className="mb-2 block">Experience</label>
 
           <Input
             type="number"
+            min={0}
             {...register("experience", {
               valueAsNumber: true,
             })}
           />
         </div>
 
+        {/* Location */}
         <div>
-          <label className="mb-2 block">
-            Location
-          </label>
+          <label className="mb-2 block">Location</label>
 
-          <Input
-            {...register("location")}
-          />
+          <Input {...register("location")} />
         </div>
 
+        {/* Save */}
         <Button
           type="submit"
           className="w-full"
-          disabled={
-            uploading || isPending
-          }
+          disabled={uploading || isPending}
         >
-          {isPending
-            ? "Saving..."
-            : "Save Changes"}
+          {isPending ? "Saving..." : "Save Changes"}
         </Button>
       </form>
     </div>

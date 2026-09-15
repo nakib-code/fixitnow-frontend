@@ -18,6 +18,10 @@ export const useCreateCategory = () => {
       await queryClient.invalidateQueries({
         queryKey: ["admin-categories"],
       });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["categories"],
+      });
     },
 
     onError: (error) => {

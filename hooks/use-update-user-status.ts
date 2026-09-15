@@ -3,16 +3,19 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { updateUserStatus } from "@/services/admin/admin.api";
+import {
+  blockUser,
+  unblockUser,
+} from "@/services/admin/admin.api";
 
-export const useUpdateUserStatus = () => {
+export const useBlockUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateUserStatus,
+    mutationFn: blockUser,
 
     onSuccess: () => {
-      toast.success("User status updated successfully");
+      toast.success("User blocked successfully");
 
       queryClient.invalidateQueries({
         queryKey: ["admin-users"],
@@ -22,7 +25,30 @@ export const useUpdateUserStatus = () => {
     onError: (error: any) => {
       toast.error(
         error?.response?.data?.message ||
-          "Failed to update user status"
+          "Failed to block user"
+      );
+    },
+  });
+};
+
+export const useUnblockUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: unblockUser,
+
+    onSuccess: () => {
+      toast.success("User unblocked successfully");
+
+      queryClient.invalidateQueries({
+        queryKey: ["admin-users"],
+      });
+    },
+
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to unblock user"
       );
     },
   });

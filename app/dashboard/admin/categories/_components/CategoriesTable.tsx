@@ -16,8 +16,7 @@ import UpdateCategoryDialog from "./UpdateCategoryDialog";
 import DeleteCategoryDialog from "./DeleteCategoryDialog";
 
 const CategoriesTable = () => {
-  const { data: categories = [], isLoading } =
-    useAdminCategories();
+  const { data: categories = [], isLoading } = useAdminCategories();
 
   if (isLoading) {
     return (
@@ -71,7 +70,7 @@ const CategoriesTable = () => {
             </TableHeader>
 
             <TableBody>
-              {categories.map((category: any) => (
+              {categories.map((category) => (
                 <TableRow key={category.id}>
                   <TableCell className="font-medium">
                     {category.name}
@@ -94,9 +93,11 @@ const CategoriesTable = () => {
                   </TableCell>
 
                   <TableCell>
-                    {new Date(
-                      category.createdAt
-                    ).toLocaleDateString()}
+                    {category.createdAt
+                      ? new Date(
+                          category.createdAt
+                        ).toLocaleDateString()
+                      : "-"}
                   </TableCell>
 
                   <TableCell>

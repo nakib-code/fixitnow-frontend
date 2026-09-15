@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+
 import {
   ArrowRight,
   MapPin,
@@ -13,44 +15,87 @@ interface Props {
   service: Service;
 }
 
-export default function ServiceCard({ service }: Props) {
+export default function ServiceCard({
+  service,
+}: Props) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5">
-      {/* Top */}
-      <div className="flex items-center justify-between border-b border-border bg-muted/30 px-5 py-4">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-          <Wrench className="size-3.5" />
-          {service.category.name}
-        </span>
 
-        <span className="text-lg font-bold text-primary">
-          ৳{service.price}
-        </span>
+      {/* Service Image */}
+      <div className="relative h-64 w-full overflow-hidden bg-muted sm:h-72">
+        {service.image ? (
+          <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <Wrench className="size-16 text-muted-foreground/30" />
+          </div>
+        )}
+
+        {/* Image Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+
+        {/* Category */}
+        <div className="absolute left-4 top-4">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-primary shadow-md backdrop-blur">
+            <Wrench className="size-3.5" />
+            {service.category.name}
+          </span>
+        </div>
+
+        {/* Price */}
+        <div className="absolute bottom-4 right-4">
+          <span className="rounded-xl bg-primary px-4 py-2 text-lg font-bold text-primary-foreground shadow-lg">
+            ৳{service.price}
+          </span>
+        </div>
       </div>
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h2 className="text-xl font-bold tracking-tight text-foreground">
+
+        {/* Title */}
+        <h2 className="text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
           {service.title}
         </h2>
 
+        {/* Description */}
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
           {service.description}
         </p>
 
-        {/* Technician */}
-        <div className="mt-6 space-y-3">
+        {/* Technician & Location */}
+        <div className="mt-6 space-y-4">
+
+          {/* Technician */}
           <div className="flex items-center gap-3">
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <UserRound className="size-4" />
-            </div>
+            {service.technician.user.profileImg ? (
+              <div className="relative size-11 shrink-0 overflow-hidden rounded-full border-2 border-background shadow-sm">
+                <Image
+                  src={service.technician.user.profileImg}
+                  alt={service.technician.user.name}
+                  fill
+                  sizes="44px"
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <UserRound className="size-5" />
+              </div>
+            )}
 
             <div className="min-w-0">
               <p className="text-xs text-muted-foreground">
                 Technician
               </p>
 
-              <p className="truncate text-sm font-medium text-foreground">
+              <p className="truncate text-sm font-semibold text-foreground">
                 {service.technician.user.name}
               </p>
             </div>
@@ -58,7 +103,7 @@ export default function ServiceCard({ service }: Props) {
 
           {/* Location */}
           <div className="flex items-center gap-3">
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
+            <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
               <MapPin className="size-4" />
             </div>
 
@@ -74,15 +119,13 @@ export default function ServiceCard({ service }: Props) {
           </div>
         </div>
 
-        {/* Button */}
+        {/* View Details */}
         <div className="mt-auto pt-6">
           <Link
             href={`/services/${service.id}`}
             className="block"
           >
-            <Button
-              className="group/button h-11 w-full rounded-xl"
-            >
+            <Button className="group/button h-11 w-full rounded-xl">
               View Details
 
               <ArrowRight className="ml-2 size-4 transition-transform duration-200 group-hover/button:translate-x-1" />
