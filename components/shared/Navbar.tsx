@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
 import { ArrowRight, Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -44,7 +45,7 @@ export default function Navbar() {
     : "/";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
@@ -112,7 +113,7 @@ export default function Navbar() {
 
           <Sheet>
             <SheetTrigger
-              className="flex size-10 items-center justify-center rounded-xl text-foreground transition-all duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex size-10 items-center justify-center rounded-xl border border-border bg-background text-foreground transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Open navigation menu"
             >
               <Menu className="size-5" />
@@ -120,33 +121,36 @@ export default function Navbar() {
 
             <SheetContent
               side="right"
-              className="w-[88%] max-w-sm border-l border-border bg-background px-0"
+              className="w-[88%] max-w-sm border-l border-border bg-background p-0"
             >
               {/* Mobile Header */}
-              <SheetHeader className="border-b border-border/60 px-5 py-5">
-                <Link
-                  href="/"
-                  className="flex items-center"
-                  aria-label="FixItNow Home"
-                >
-                  <Image
-                    src="/logo.png"
-                    alt="FixItNow"
-                    width={48}
-                    height={48}
-                    className="size-12 object-contain"
-                  />
-                </Link>
+              <SheetHeader className="border-b border-border/60 px-5 py-3">
+                <div className="flex h-14 items-center">
+                  <Link
+                    href="/"
+                    className="group flex items-center"
+                    aria-label="FixItNow Home"
+                  >
+                    <Image
+                      src="/logo.png"
+                      alt="FixItNow"
+                      width={400}
+                      height={400}
+                      priority
+                      className="size-40 object-contain transition-transform duration-200 group-hover:scale-105"
+                    />
+                  </Link>
 
-                <SheetTitle className="sr-only">
-                  FixItNow Navigation Menu
-                </SheetTitle>
+                  <SheetTitle className="sr-only">
+                    FixItNow Navigation Menu
+                  </SheetTitle>
+                </div>
               </SheetHeader>
 
               {/* Mobile Content */}
-              <div className="flex flex-col px-5 py-6">
+              <div className="flex flex-col px-5 py-5">
                 {/* Navigation Links */}
-                <nav className="flex flex-col gap-1">
+                <nav className="space-y-1">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
@@ -159,7 +163,7 @@ export default function Navbar() {
                 </nav>
 
                 {/* Divider */}
-                <div className="my-6 h-px bg-border" />
+                <div className="my-5 h-px bg-border" />
 
                 {/* Authentication */}
                 {user ? (
@@ -180,7 +184,7 @@ export default function Navbar() {
                     >
                       <Button
                         variant="outline"
-                        className="h-12 w-full rounded-xl border-border font-medium transition-all duration-200 hover:bg-muted"
+                        className="h-12 w-full rounded-xl border-border font-medium transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
                       >
                         Login
                       </Button>
@@ -196,6 +200,13 @@ export default function Navbar() {
                     </Link>
                   </div>
                 )}
+
+                {/* Small Footer */}
+                <div className="mt-7 border-t border-border pt-4">
+                  <p className="text-center text-xs text-muted-foreground">
+                    Simple. Fast. Reliable.
+                  </p>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
