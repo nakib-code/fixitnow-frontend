@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { useCreateReview } from "@/hooks/use-create-review";
+import { useCreateReview } from "@/hooks/reviews/use-create-review";
 
 const reviewSchema = z.object({
   rating: z.number()

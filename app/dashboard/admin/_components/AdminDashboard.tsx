@@ -9,11 +9,11 @@ import {
   Users,
 } from "lucide-react";
 
-import { useAdminBookings } from "@/hooks/use-admin-bookings";
-import { useAdminCategories } from "@/hooks/use-admin-categories";
-import { useAdminUsers } from "@/hooks/use-admin-users";
-
 import DashboardCard from "@/components/admin/dashboard/DashboardCard";
+
+import { useAdminBookings } from "@/hooks/admin/use-admin-bookings";
+import { useAdminCategories } from "@/hooks/admin/use-admin-categories";
+import { useAdminUsers } from "@/hooks/admin/use-admin-users";
 
 type UserData = {
   role: string;
@@ -46,21 +46,24 @@ const AdminDashboard = () => {
     bookingsLoading ||
     categoriesLoading;
 
+  /* ================= LOADING ================= */
+
   if (isLoading) {
     return (
       <div className="space-y-8">
         {/* Header Skeleton */}
         <div className="space-y-2">
-          <div className="h-8 w-48 animate-pulse rounded-md bg-slate-200" />
-          <div className="h-4 w-80 max-w-full animate-pulse rounded-md bg-slate-200" />
+          <div className="h-8 w-48 animate-pulse rounded-md bg-muted sm:h-9" />
+
+          <div className="h-4 w-80 max-w-full animate-pulse rounded-md bg-muted" />
         </div>
 
         {/* Cards Skeleton */}
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:gap-5 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={index}
-              className="h-40 animate-pulse rounded-xl border bg-slate-100"
+              className="app-card h-40 animate-pulse bg-muted"
             />
           ))}
         </div>
@@ -68,10 +71,13 @@ const AdminDashboard = () => {
     );
   }
 
+  /* ================= DATA ================= */
+
   const userList = users as UserData[];
   const bookingList = bookings as BookingData[];
 
-  // Statistics
+  /* ================= STATISTICS ================= */
+
   const totalUsers = userList.length;
 
   const totalCustomers = userList.filter(
@@ -88,68 +94,64 @@ const AdminDashboard = () => {
 
   const totalRevenue = bookingList.reduce(
     (sum, booking) => {
-      return (
-        sum +
-        Number(booking.payment?.amount ?? 0)
-      );
+      return sum + Number(booking.payment?.amount ?? 0);
     },
     0
   );
 
-  const formattedRevenue =
-    `৳ ${totalRevenue.toLocaleString("en-BD")}`;
+  const formattedRevenue = `৳ ${totalRevenue.toLocaleString("en-BD")}`;
+
+  /* ================= UI ================= */
 
   return (
     <div className="space-y-8">
-      {/* ================= HEADER ================= */}
-      <div className="flex flex-col gap-2">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Admin Dashboard
-          </h1>
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          Admin Dashboard
+        </h1>
 
-          <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-            Welcome back! Here&apos;s an overview of your platform.
-          </p>
-        </div>
+        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+          Welcome back! Here&apos;s an overview of your platform.
+        </p>
       </div>
 
-      {/* ================= STATISTICS ================= */}
+      {/* Statistics */}
       <div className="grid gap-4 sm:grid-cols-2 lg:gap-5 xl:grid-cols-3">
         <DashboardCard
           title="Total Users"
           value={totalUsers}
-          icon={<Users className="h-6 w-6" />}
+          icon={<Users className="size-6" />}
         />
 
         <DashboardCard
           title="Customers"
           value={totalCustomers}
-          icon={<User className="h-6 w-6" />}
+          icon={<User className="size-6" />}
         />
 
         <DashboardCard
           title="Technicians"
           value={totalTechnicians}
-          icon={<UserCog className="h-6 w-6" />}
+          icon={<UserCog className="size-6" />}
         />
 
         <DashboardCard
           title="Bookings"
           value={totalBookings}
-          icon={<CalendarCheck className="h-6 w-6" />}
+          icon={<CalendarCheck className="size-6" />}
         />
 
         <DashboardCard
           title="Categories"
           value={totalCategories}
-          icon={<FolderOpen className="h-6 w-6" />}
+          icon={<FolderOpen className="size-6" />}
         />
 
         <DashboardCard
           title="Revenue"
           value={formattedRevenue}
-          icon={<Banknote className="h-6 w-6" />}
+          icon={<Banknote className="size-6" />}
         />
       </div>
     </div>

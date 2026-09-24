@@ -1,8 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowRight,
   CheckCircle2,
-  Search,
   ShieldCheck,
   Star,
   Wrench,
@@ -10,11 +11,39 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { useTechnicians } from "@/hooks/technicians/use-technicians";
+import { useServices } from "@/hooks/services/use-services";
+import { useReviews } from "@/hooks/reviews/useReviews";
+
 export default function Hero() {
+  const { data: technicians = [], isLoading: techniciansLoading } =
+    useTechnicians();
+
+  const { data: services = [], isLoading: servicesLoading } =
+    useServices();
+
+  const { data: reviews = [], isLoading: reviewsLoading } = useReviews();
+
+  const technicianCount = technicians.length;
+  const serviceCount = services.length;
+
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviews.length
+      : 0;
+
+  const formattedRating =
+    averageRating > 0 ? averageRating.toFixed(1) : "—";
+
+  const statsLoading =
+    techniciansLoading || servicesLoading;
+
   return (
     <section className="relative overflow-hidden bg-background">
       {/* Background Decoration */}
       <div className="pointer-events-none absolute -left-32 top-20 size-72 rounded-full bg-primary/10 blur-3xl" />
+
       <div className="pointer-events-none absolute -right-32 top-40 size-80 rounded-full bg-accent/15 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
@@ -40,47 +69,30 @@ export default function Hero() {
           {/* Description */}
           <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
             Book trusted professionals for plumbing, electrical,
-            AC repair, cleaning, painting, and more — all in one place.
+            AC repair, cleaning, painting, and more — all in one
+            place.
           </p>
 
-          {/* Search */}
-          <div className="mt-7 flex max-w-xl items-center gap-3 rounded-2xl border border-border bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md">
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted">
-              <Search className="size-5 text-muted-foreground" />
-            </div>
-
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm text-muted-foreground">
-                What service do you need?
-              </p>
-              <p className="truncate text-xs text-muted-foreground/70">
-                Search plumbing, cleaning, electrical...
-              </p>
-            </div>
-
-            <Link href="/services">
-              <Button
-                size="sm"
-                className="hidden rounded-xl sm:flex"
-              >
-                Search
-              </Button>
-            </Link>
-          </div>
-
-          {/* Mobile CTA */}
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <Link href="/services" className="flex-1 sm:flex-none">
+          {/* CTA */}
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/services"
+              className="flex-1 sm:flex-none"
+            >
               <Button
                 size="lg"
                 className="h-12 w-full gap-2 rounded-xl px-6 sm:w-auto"
               >
                 Browse Services
-                <ArrowRight className="size-4" />
+
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Button>
             </Link>
 
-            <Link href="/auth/register" className="flex-1 sm:flex-none">
+            <Link
+              href="/auth/register"
+              className="flex-1 sm:flex-none"
+            >
               <Button
                 variant="outline"
                 size="lg"
@@ -104,33 +116,70 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Stats */}
+          {/* Real Stats */}
           <div className="mt-10 grid grid-cols-3 divide-x divide-border border-y border-border py-5">
+            {/* Technicians */}
             <div className="pr-3">
-              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
-                500+
-              </h3>
-              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                Technicians
-              </p>
+              {statsLoading ? (
+                <>
+                  <div className="h-7 w-16 animate-pulse rounded-md bg-muted" />
+                  <div className="mt-2 h-4 w-20 animate-pulse rounded bg-muted" />
+                </>
+              ) : (
+                <>
+                  <h3 className="text-xl font-bold text-foreground sm:text-2xl">
+                    {technicianCount}+
+                  </h3>
+
+                  <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                    Technicians
+                  </p>
+                </>
+              )}
             </div>
 
+            {/* Services */}
             <div className="px-3">
-              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
-                1500+
-              </h3>
-              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                Services
-              </p>
+              {statsLoading ? (
+                <>
+                  <div className="h-7 w-16 animate-pulse rounded-md bg-muted" />
+                  <div className="mt-2 h-4 w-16 animate-pulse rounded bg-muted" />
+                </>
+              ) : (
+                <>
+                  <h3 className="text-xl font-bold text-foreground sm:text-2xl">
+                    {serviceCount}+
+                  </h3>
+
+                  <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                    Services
+                  </p>
+                </>
+              )}
             </div>
 
+            {/* Rating */}
             <div className="pl-3">
-              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
-                10K+
-              </h3>
-              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                Customers
-              </p>
+              {reviewsLoading ? (
+                <>
+                  <div className="h-7 w-16 animate-pulse rounded-md bg-muted" />
+                  <div className="mt-2 h-4 w-16 animate-pulse rounded bg-muted" />
+                </>
+              ) : (
+                <>
+                  <h3 className="flex items-center gap-1 text-xl font-bold text-foreground sm:text-2xl">
+                    {formattedRating}
+
+                    {averageRating > 0 && (
+                      <Star className="size-4 fill-accent text-accent sm:size-5" />
+                    )}
+                  </h3>
+
+                  <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                    Customer Rating
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -147,6 +196,7 @@ export default function Hero() {
 
             {/* Orange Accent */}
             <div className="absolute right-12 top-16 size-5 rounded-full bg-accent shadow-lg shadow-accent/30" />
+
             <div className="absolute bottom-20 left-14 size-3 rounded-full bg-primary/40" />
           </div>
 
@@ -160,6 +210,7 @@ export default function Hero() {
               <p className="text-sm font-semibold text-foreground">
                 Verified Professionals
               </p>
+
               <p className="mt-0.5 text-xs text-muted-foreground">
                 Trusted & experienced
               </p>
@@ -174,10 +225,17 @@ export default function Hero() {
 
             <div>
               <p className="text-sm font-semibold text-foreground">
-                4.9 / 5 Rating
+                {averageRating > 0
+                  ? `${formattedRating} / 5 Rating`
+                  : "No ratings yet"}
               </p>
+
               <p className="mt-0.5 text-xs text-muted-foreground">
-                From happy customers
+                {reviews.length > 0
+                  ? `From ${reviews.length} customer ${
+                      reviews.length === 1 ? "review" : "reviews"
+                    }`
+                  : "Be the first to review"}
               </p>
             </div>
           </div>

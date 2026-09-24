@@ -3,12 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { useCreateBooking } from "@/hooks/use-create-booking";
+import { useCreateBooking } from "@/hooks/bookings/use-create-booking";
 
 import {
   Dialog,
@@ -32,36 +31,30 @@ const bookingSchema = z
     address: z
       .string()
       .min(5, "Address is required")
-      .max(200),
+      .max(200, "Address must be less than 200 characters"),
 
-    note: z.string().max(300).optional(),
+    note: z
+      .string()
+      .max(300, "Note must be less than 300 characters")
+      .optional(),
   })
-  .refine(
-    (data) => data.endTime > data.startTime,
-    {
-      path: ["endTime"],
-      message:
-        "End time must be after start time",
-    }
-  );
+  .refine((data) => data.endTime > data.startTime, {
+    path: ["endTime"],
+    message: "End time must be after start time",
+  });
 
-type BookingForm = z.infer<
-  typeof bookingSchema
->;
+type BookingForm = z.infer<typeof bookingSchema>;
 
 interface Props {
   serviceId: string;
 }
 
-export default function BookingDialog({
-  serviceId,
-}: Props) {
+export default function BookingDialog({ serviceId }: Props) {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
 
-  const { mutate, isPending } =
-    useCreateBooking();
+  const { mutate, isPending } = useCreateBooking();
 
   const {
     register,
@@ -80,9 +73,7 @@ export default function BookingDialog({
     },
   });
 
-  const onSubmit = (
-    values: BookingForm
-  ) => {
+  const onSubmit = (values: BookingForm) => {
     mutate(
       {
         serviceId,
@@ -90,175 +81,155 @@ export default function BookingDialog({
       },
       {
         onSuccess: () => {
-          toast.success(
-            "Booking created successfully"
-          );
+          toast.success("Booking created successfully");
 
           reset();
-
           setOpen(false);
 
-          router.push(
-            "/dashboard/customer/bookings"
-          );
+          router.push("/dashboard/customer/bookings");
         },
 
         onError: (error: any) => {
-          toast.error(
-            error?.response?.data?.message ??
-              "Booking failed"
-          );
+          toast.error(error?.response?.data?.message ?? "Booking failed");
         },
-      }
+      },
     );
   };
 
+  const today = new Date().toISOString().split("T")[0];
+
   return (
-    <Dialog
-      open={open}
-      onOpenChange={setOpen}
-    >
-      <DialogTrigger>
-          Book Now
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* Book Now Button */}
+      <DialogTrigger className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-primary px-7 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/25 active:translate-y-0 sm:w-auto">
+        Book Now
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-lg">
+      {/* Booking Dialog */}
+      <DialogContent className="w-[calc(100%-2rem)] rounded-2xl sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>
-            Book Service
-          </DialogTitle>
+          <DialogTitle className="text-xl font-bold">Book Service</DialogTitle>
         </DialogHeader>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-5"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Booking Date */}
-
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-2 block text-sm font-medium text-foreground">
               Booking Date
             </label>
 
             <Input
               type="date"
-              min={
-                new Date()
-                  .toISOString()
-                  .split("T")[0]
-              }
-              {...register(
-                "bookingDate"
-              )}
+              min={today}
+              className="h-11 rounded-xl"
+              {...register("bookingDate")}
             />
 
-            <p className="mt-1 text-sm text-red-500">
-              {
-                errors.bookingDate
-                  ?.message
-              }
-            </p>
+            {errors.bookingDate?.message && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.bookingDate.message}
+              </p>
+            )}
           </div>
 
           {/* Time */}
-
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {/* Start Time */}
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label className="mb-2 block text-sm font-medium text-foreground">
                 Start Time
               </label>
 
               <Input
                 type="time"
-                {...register(
-                  "startTime"
-                )}
+                className="h-11 rounded-xl"
+                {...register("startTime")}
               />
 
-              <p className="mt-1 text-sm text-red-500">
-                {
-                  errors.startTime
-                    ?.message
-                }
-              </p>
+              {errors.startTime?.message && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.startTime.message}
+                </p>
+              )}
             </div>
 
+            {/* End Time */}
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label className="mb-2 block text-sm font-medium text-foreground">
                 End Time
               </label>
 
               <Input
                 type="time"
-                {...register(
-                  "endTime"
-                )}
+                className="h-11 rounded-xl"
+                {...register("endTime")}
               />
 
-              <p className="mt-1 text-sm text-red-500">
-                {
-                  errors.endTime
-                    ?.message
-                }
-              </p>
+              {errors.endTime?.message && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.endTime.message}
+                </p>
+              )}
             </div>
           </div>
 
-          {/* Address */}
-
+          {/* Service Address */}
           <div>
-            <label className="mb-2 block text-sm font-medium">
+            <label className="mb-2 block text-sm font-medium text-foreground">
               Service Address
             </label>
 
             <Input
+              type="text"
               placeholder="House No, Road, Area, District"
-              {...register(
-                "address"
-              )}
+              className="h-11 rounded-xl"
+              {...register("address")}
             />
 
-            <p className="mt-1 text-sm text-red-500">
-              {
-                errors.address
-                  ?.message
-              }
-            </p>
+            {errors.address?.message && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.address.message}
+              </p>
+            )}
           </div>
 
-          {/* Note */}
-
+          {/* Special Instructions */}
           <div>
-            <label className="mb-2 block text-sm font-medium">
-              Special Instructions
-              (Optional)
+            <label className="mb-2 block text-sm font-medium text-foreground">
+              Special Instructions{" "}
+              <span className="font-normal text-muted-foreground">
+                (Optional)
+              </span>
             </label>
 
             <textarea
               rows={4}
               maxLength={300}
-              className="w-full rounded-md border p-3 text-sm outline-none focus:ring-2 focus:ring-primary"
               placeholder="Example: Please call before arriving."
+              className="w-full resize-none rounded-xl border border-input bg-background p-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
               {...register("note")}
             />
 
-            <p className="text-right text-xs text-slate-500">
-              Max 300 characters
-            </p>
+            <div className="mt-1 flex items-center justify-between">
+              <div>
+                {errors.note?.message && (
+                  <p className="text-sm text-red-500">{errors.note.message}</p>
+                )}
+              </div>
 
-            <p className="mt-1 text-sm text-red-500">
-              {errors.note?.message}
-            </p>
+              <p className="text-xs text-muted-foreground">
+                Max 300 characters
+              </p>
+            </div>
           </div>
 
+          {/* Confirm Booking */}
           <Button
             type="submit"
-            className="w-full"
             disabled={isPending}
+            className="h-12 w-full rounded-xl bg-primary text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/25 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isPending
-              ? "Creating Booking..."
-              : "Confirm Booking"}
+            {isPending ? "Creating Booking..." : "Confirm Booking"}
           </Button>
         </form>
       </DialogContent>

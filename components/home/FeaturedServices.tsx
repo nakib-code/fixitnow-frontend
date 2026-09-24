@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -9,7 +9,7 @@ import {
   Wrench,
 } from "lucide-react";
 
-import { useServices } from "@/hooks/use-services";
+import { useServices } from "@/hooks/services/use-services";
 
 export default function FeaturedServices() {
   const {
@@ -25,7 +25,9 @@ export default function FeaturedServices() {
           {/* Header Skeleton */}
           <div className="space-y-3">
             <div className="h-6 w-36 animate-pulse rounded-md bg-muted" />
+
             <div className="h-9 w-64 animate-pulse rounded-lg bg-muted" />
+
             <div className="h-4 w-80 max-w-full animate-pulse rounded bg-muted" />
           </div>
 
@@ -34,7 +36,7 @@ export default function FeaturedServices() {
             {Array.from({ length: 6 }).map((_, index) => (
               <div
                 key={index}
-                className="h-80 animate-pulse rounded-3xl bg-muted"
+                className="app-card h-80 animate-pulse bg-muted"
               />
             ))}
           </div>
@@ -89,15 +91,15 @@ export default function FeaturedServices() {
             </h2>
 
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
-              Discover our most requested home services and book a
-              trusted professional in just a few clicks.
+              Discover our most requested home services and book a trusted
+              professional in just a few clicks.
             </p>
           </div>
 
           {/* Desktop View All */}
           <Link
             href="/services"
-            className="group hidden items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/30 hover:text-primary sm:inline-flex"
+            className="group hidden items-center gap-2 app-card border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary/30 hover:text-primary sm:inline-flex"
           >
             View all services
 
@@ -111,7 +113,7 @@ export default function FeaturedServices() {
             <Link
               key={service.id}
               href={`/services/${service.id}`}
-              className="group overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5"
+              className="app-card group block overflow-hidden border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5"
             >
               {/* Image */}
               <div className="relative h-52 overflow-hidden bg-muted">
@@ -170,6 +172,7 @@ export default function FeaturedServices() {
 
                   <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground transition-colors group-hover:text-primary">
                     Book service
+
                     <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
@@ -185,6 +188,7 @@ export default function FeaturedServices() {
             className="group inline-flex items-center gap-2 text-sm font-semibold text-primary"
           >
             View all services
+
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

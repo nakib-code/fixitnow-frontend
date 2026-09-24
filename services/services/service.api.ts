@@ -1,10 +1,13 @@
 import { axiosInstance } from "@/lib/axios";
 
-import { Service, TCreateService } from "@/types/service";
+import {
+  Service,
+  TCreateService,
+} from "@/types/service";
 
 export const getServices = async (
   search?: string,
-  category?: string
+  category?: string,
 ): Promise<Service[]> => {
   const params = new URLSearchParams();
 
@@ -17,22 +20,24 @@ export const getServices = async (
   }
 
   const { data } = await axiosInstance.get(
-    `/services?${params.toString()}`
+    `/services?${params.toString()}`,
   );
 
   return data.data;
 };
 
-export const getSingleService = async (id: string) => {
+export const getSingleService = async (
+  id: string,
+) => {
   const { data } = await axiosInstance.get(
-    `/services/${id}`
+    `/services/${id}`,
   );
 
   return data.data;
 };
 
 export const createService = async (
-  payload: TCreateService
+  payload: TCreateService,
 ) => {
   const formData = new FormData();
 
@@ -45,7 +50,7 @@ export const createService = async (
   if (payload.isAvailable !== undefined) {
     formData.append(
       "isAvailable",
-      String(payload.isAvailable)
+      String(payload.isAvailable),
     );
   }
 
@@ -55,7 +60,7 @@ export const createService = async (
 
   const { data } = await axiosInstance.post(
     "/services",
-    formData
+    formData,
   );
 
   return data.data;
@@ -63,7 +68,7 @@ export const createService = async (
 
 export const getMyServices = async () => {
   const { data } = await axiosInstance.get(
-    "/services/my-services"
+    "/services/my-services",
   );
 
   return data.data;
@@ -83,25 +88,37 @@ export const updateService = async ({
   }
 
   if (payload.description !== undefined) {
-    formData.append("description", payload.description);
+    formData.append(
+      "description",
+      payload.description,
+    );
   }
 
   if (payload.price !== undefined) {
-    formData.append("price", String(payload.price));
+    formData.append(
+      "price",
+      String(payload.price),
+    );
   }
 
   if (payload.duration !== undefined) {
-    formData.append("duration", String(payload.duration));
+    formData.append(
+      "duration",
+      String(payload.duration),
+    );
   }
 
   if (payload.categoryId !== undefined) {
-    formData.append("categoryId", payload.categoryId);
+    formData.append(
+      "categoryId",
+      payload.categoryId,
+    );
   }
 
   if (payload.isAvailable !== undefined) {
     formData.append(
       "isAvailable",
-      String(payload.isAvailable)
+      String(payload.isAvailable),
     );
   }
 
@@ -111,19 +128,21 @@ export const updateService = async ({
 
   const { data } = await axiosInstance.patch(
     `/services/${id}`,
-    formData
+    formData,
   );
 
   return data.data;
 };
 
-export const deleteService = async (id: string) => {
+export const deleteService = async (
+  id: string,
+) => {
   await axiosInstance.delete(`/services/${id}`);
 };
 
 export const getTechnicianBookings = async () => {
   const { data } = await axiosInstance.get(
-    "/technician/bookings"
+    "/technician/bookings",
   );
 
   return data.data;

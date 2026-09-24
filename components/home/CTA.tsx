@@ -12,7 +12,7 @@ export default function HomeCTA() {
   return (
     <section className="relative overflow-hidden bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-[2rem] bg-primary px-6 py-12 text-center shadow-2xl shadow-primary/20 sm:px-10 sm:py-16 lg:px-16">
+        <div className="app-card relative overflow-hidden bg-primary px-6 py-12 text-center shadow-2xl shadow-primary/20 sm:px-10 sm:py-16 lg:px-16">
           {/* Decorative Elements */}
           <div className="pointer-events-none absolute -left-20 -top-20 size-48 rounded-full bg-white/10 blur-2xl" />
 
@@ -37,11 +37,11 @@ export default function HomeCTA() {
 
             {/* Description */}
             <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-primary-foreground/80 sm:text-base">
-              Find a trusted professional, book your service, and get
-              your home back in shape — quickly and easily.
+              Find a trusted professional, book your service, and get your
+              home back in shape — quickly and easily.
             </p>
 
-            {/* CTA */}
+            {/* CTA Buttons */}
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link href="/services">
                 <Button
@@ -49,6 +49,7 @@ export default function HomeCTA() {
                   className="group h-12 rounded-xl bg-background px-6 font-semibold text-foreground shadow-lg hover:bg-background/90"
                 >
                   Find a Service
+
                   <ArrowRight className="ml-2 size-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Button>
               </Link>

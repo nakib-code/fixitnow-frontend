@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import {
-  House,
-  LayoutDashboard,
   Briefcase,
   CalendarDays,
+  LayoutDashboard,
+  LogOut,
   PlusCircle,
   User,
+  Wrench,
 } from "lucide-react";
 
 const menus = [
@@ -16,11 +18,6 @@ const menus = [
     title: "Dashboard",
     href: "/dashboard/technician",
     icon: LayoutDashboard,
-  },
-  {
-    title: "Home",
-    href: "/",
-    icon: House,
   },
   {
     title: "My Services",
@@ -33,7 +30,7 @@ const menus = [
     icon: PlusCircle,
   },
   {
-    title: "requests",
+    title: "Requests",
     href: "/dashboard/technician/requests",
     icon: CalendarDays,
   },
@@ -48,39 +45,64 @@ export default function TechnicianSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-64 border-r bg-white md:block">
-      <div className="border-b p-6">
-        <Link href="/">
-          <h1 className="text-2xl font-bold text-blue-600">
-            🔧 FixItNow
-          </h1>
+    <aside className="hidden min-h-[calc(100vh-4rem)] w-64 shrink-0 flex-col border-r border-border bg-card md:flex">
+      {/* Logo */}
+      <div className="shrink-0 border-b border-border p-6">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="flex size-9 items-center justify-center rounded-xl bg-primary">
+            <Wrench className="size-5 text-primary-foreground" />
+          </div>
+
+          <span className="text-xl font-bold tracking-tight text-foreground">
+            FixIt<span className="text-primary">Now</span>
+          </span>
         </Link>
       </div>
 
-      <nav className="space-y-2 p-4">
+      {/* Navigation */}
+      <nav className="flex-1 space-y-1 p-4">
         {menus.map((item) => {
           const Icon = item.icon;
 
           const active =
             pathname === item.href ||
-            pathname.startsWith(item.href + "/");
+            pathname.startsWith(`${item.href}/`);
 
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-4 py-3 ${
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
                 active
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-slate-100"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
-              <Icon size={18} />
-              {item.title}
+              <Icon className="size-[18px]" />
+              <span>{item.title}</span>
             </Link>
           );
         })}
       </nav>
+
+      {/* Bottom Actions */}
+      <div className="shrink-0 border-t border-border p-4">
+        <Link
+          href="/"
+          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-muted hover:text-foreground"
+        >
+          <Wrench className="size-[18px]" />
+          <span>Visit Store</span>
+        </Link>
+
+        <button
+          type="button"
+          className="mt-1 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-destructive transition-all duration-200 hover:bg-destructive/10"
+        >
+          <LogOut className="size-[18px]" />
+          <span>Logout</span>
+        </button>
+      </div>
     </aside>
   );
 }

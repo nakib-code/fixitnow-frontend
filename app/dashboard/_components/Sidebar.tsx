@@ -7,7 +7,7 @@ import CustomerSidebar from "@/app/dashboard/customer/_components/CustomerSideba
 import TechnicianSidebar from "@/app/dashboard/technician/_components/TechnicianSidebar";
 
 import { Button } from "@/components/ui/button";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useCurrentUser } from "@/hooks/auth/use-current-user";
 
 type Props = {
   open: boolean;

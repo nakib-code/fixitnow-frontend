@@ -1,9 +1,8 @@
 "use client";
 
-import ProfileHeader from "./_components/ProfileHeader";
 import ProfileForm from "./_components/ProfileForm";
 
-import { useMyTechnicianProfile } from "@/hooks/use-my-technician-profile";
+import { useMyTechnicianProfile } from "@/hooks/technicians/use-my-technician-profile";
 
 export default function TechnicianProfilePage() {
   const {
@@ -29,10 +28,6 @@ export default function TechnicianProfilePage() {
 
   return (
     <div className="space-y-6">
-
-      <ProfileHeader
-        profile={profile}
-      />
 
       <ProfileForm
         profile={profile}

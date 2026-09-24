@@ -66,7 +66,7 @@ export default function WhyChooseUs() {
             return (
               <div
                 key={item.title}
-                className="group relative rounded-3xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5"
+                className="app-card group relative border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl hover:shadow-primary/5"
               >
                 {/* Number */}
                 <span className="absolute right-5 top-5 text-xs font-bold text-muted-foreground/30">
@@ -74,7 +74,7 @@ export default function WhyChooseUs() {
                 </span>
 
                 {/* Icon */}
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
                   <Icon className="size-5" />
                 </div>
 

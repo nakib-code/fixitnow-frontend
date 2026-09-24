@@ -13,7 +13,7 @@ import {
 } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
-import { useCategories } from "@/hooks/use-categories";
+import { useCategories } from "@/hooks/categories/use-categories";
 import { ICategory } from "@/types/category";
 
 export default function ServicesFilter() {

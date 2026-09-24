@@ -1,23 +1,28 @@
 "use client";
 
-import { getCurrentUser } from "@/services/auth/auth.api";
 import { useQuery } from "@tanstack/react-query";
+
+import { getCurrentUser } from "@/services/auth/auth.api";
 
 export const useCurrentUser = () => {
   const {
-    data,
+    data: user,
     isLoading,
     isError,
     refetch,
   } = useQuery({
     queryKey: ["current-user"],
     queryFn: getCurrentUser,
+
     retry: false,
-    staleTime: 0,
+
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   return {
-    user: data,
+    user,
     isLoading,
     isError,
     refetch,

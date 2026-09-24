@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { toast } from "sonner";
 
 import {
@@ -15,9 +14,7 @@ export const useUpdateTechnicianProfile = () => {
     mutationFn: updateTechnicianProfile,
 
     onSuccess: () => {
-      toast.success(
-        "Profile updated successfully"
-      );
+      toast.success("Profile updated successfully");
 
       queryClient.invalidateQueries({
         queryKey: ["technician-profile"],
@@ -35,7 +32,7 @@ export const useUpdateTechnicianProfile = () => {
     onError: (error: any) => {
       toast.error(
         error?.response?.data?.message ||
-          "Failed to update profile"
+          "Failed to update profile",
       );
     },
   });

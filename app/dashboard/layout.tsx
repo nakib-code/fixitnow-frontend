@@ -13,7 +13,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <DashboardNavbar
         onMenuClick={() => setSidebarOpen(true)}
       />
@@ -25,7 +25,7 @@ export default function DashboardLayout({
         />
 
         <main className="min-w-0 flex-1 p-3 sm:p-4 md:p-6 lg:p-8">
-          <div className="min-h-[calc(100vh-7rem)] rounded-xl border bg-white p-4 shadow-sm sm:p-5 md:p-6">
+          <div className="app-card min-h-[calc(100vh-7rem)] border border-border bg-card p-4 shadow-sm sm:p-5 md:p-6">
             {children}
           </div>
         </main>

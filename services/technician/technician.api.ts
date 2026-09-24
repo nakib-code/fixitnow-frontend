@@ -9,21 +9,20 @@ import {
 
 // Get all technicians
 export const getTechnicians = async (): Promise<Technician[]> => {
-  const { data } = await axiosInstance.get(
-    "/technician/"
-  );
+  const { data } = await axiosInstance.get("/technician/");
 
   return data.data;
 };
 
 // Get logged in technician profile
-export const getMyTechnicianProfile = async (): Promise<TechnicianProfile> => {
-  const { data } = await axiosInstance.get(
-    "/technician/profile"
-  );
+export const getMyTechnicianProfile =
+  async (): Promise<TechnicianProfile> => {
+    const { data } = await axiosInstance.get(
+      "/technician/profile"
+    );
 
-  return data.data;
-};
+    return data.data;
+  };
 
 // Update technician profile
 export const updateTechnicianProfile = async (
@@ -41,14 +40,11 @@ export const updateTechnicianProfile = async (
 export const getTechnicianBookings = async (): Promise<
   TechnicianBooking[]
 > => {
-
   const { data } = await axiosInstance.get(
     "/technician/bookings"
   );
 
-
   return data.data;
-
 };
 
 // Update booking status

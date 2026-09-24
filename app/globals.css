@@ -60,76 +60,77 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* =================================
-   FixItNow Light Theme
-   Blue + Orange
-================================= */
+/* =========================================
+   FixItNow — Light Theme
+   Primary: #0238D2
+   Accent:  #F85C05
+========================================= */
 
 :root {
-  --radius: 0.625rem;
+  --radius: 1rem;
 
   /* Main */
   --background: oklch(0.985 0.004 250);
-  --foreground: oklch(0.2 0.025 250);
+  --foreground: oklch(0.18 0.025 250);
 
   /* Card */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.025 250);
+  --card-foreground: oklch(0.18 0.025 250);
 
   /* Popover */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.025 250);
+  --popover-foreground: oklch(0.18 0.025 250);
 
-  /* Primary Blue */
-  --primary: oklch(0.55 0.22 255);
-  --primary-foreground: oklch(0.985 0.01 250);
+  /* Primary — #0238D2 */
+  --primary: #0238d2;
+  --primary-foreground: #ffffff;
 
   /* Secondary */
-  --secondary: oklch(0.96 0.02 250);
-  --secondary-foreground: oklch(0.3 0.06 250);
+  --secondary: oklch(0.955 0.018 250);
+  --secondary-foreground: oklch(0.28 0.055 250);
 
   /* Muted */
-  --muted: oklch(0.96 0.015 250);
-  --muted-foreground: oklch(0.52 0.035 250);
+  --muted: oklch(0.955 0.014 250);
+  --muted-foreground: oklch(0.5 0.035 250);
 
-  /* Orange Accent */
-  --accent: oklch(0.78 0.17 75);
-  --accent-foreground: oklch(0.25 0.06 65);
+  /* Accent — #F85C05 */
+  --accent: #f85c05;
+  --accent-foreground: #ffffff;
 
   /* Destructive */
-  --destructive: oklch(0.58 0.22 25);
+  --destructive: oklch(0.56 0.22 25);
 
   /* Border */
-  --border: oklch(0.91 0.015 250);
-  --input: oklch(0.91 0.015 250);
+  --border: oklch(0.9 0.014 250);
+  --input: oklch(0.9 0.014 250);
 
-  /* Focus Ring */
-  --ring: oklch(0.55 0.22 255);
+  /* Focus */
+  --ring: #0238d2;
 
   /* Charts */
-  --chart-1: oklch(0.55 0.22 255);
-  --chart-2: oklch(0.7 0.18 75);
+  --chart-1: #0238d2;
+  --chart-2: #f85c05;
   --chart-3: oklch(0.62 0.18 155);
   --chart-4: oklch(0.62 0.2 300);
-  --chart-5: oklch(0.6 0.2 25);
+  --chart-5: oklch(0.58 0.21 25);
 
   /* Sidebar */
   --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.25 0.035 250);
-  --sidebar-primary: oklch(0.55 0.22 255);
-  --sidebar-primary-foreground: oklch(0.985 0.01 250);
+  --sidebar-foreground: oklch(0.22 0.035 250);
+  --sidebar-primary: #0238d2;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: oklch(0.95 0.025 255);
-  --sidebar-accent-foreground: oklch(0.4 0.15 255);
-  --sidebar-border: oklch(0.91 0.015 250);
-  --sidebar-ring: oklch(0.55 0.22 255);
+  --sidebar-accent-foreground: #0238d2;
+  --sidebar-border: oklch(0.9 0.014 250);
+  --sidebar-ring: #0238d2;
 }
 
-/* =================================
-   FixItNow Dark Theme
-================================= */
+/* =========================================
+   FixItNow — Dark Theme
+========================================= */
 
 .dark {
-  --background: oklch(0.15 0.025 250);
+  --background: oklch(0.145 0.025 250);
   --foreground: oklch(0.96 0.01 250);
 
   --card: oklch(0.19 0.025 250);
@@ -138,53 +139,53 @@
   --popover: oklch(0.19 0.025 250);
   --popover-foreground: oklch(0.96 0.01 250);
 
-  /* Primary Blue */
-  --primary: oklch(0.62 0.21 255);
-  --primary-foreground: oklch(0.98 0.01 250);
+  /* Primary — #0238D2 */
+  --primary: #0238d2;
+  --primary-foreground: #ffffff;
 
   /* Secondary */
-  --secondary: oklch(0.25 0.035 250);
+  --secondary: oklch(0.245 0.035 250);
   --secondary-foreground: oklch(0.95 0.01 250);
 
   /* Muted */
-  --muted: oklch(0.25 0.03 250);
+  --muted: oklch(0.245 0.03 250);
   --muted-foreground: oklch(0.7 0.025 250);
 
-  /* Orange Accent */
-  --accent: oklch(0.78 0.17 75);
-  --accent-foreground: oklch(0.2 0.04 65);
+  /* Accent — #F85C05 */
+  --accent: #f85c05;
+  --accent-foreground: #ffffff;
 
   /* Destructive */
-  --destructive: oklch(0.65 0.2 25);
+  --destructive: oklch(0.64 0.21 25);
 
   /* Border */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
 
-  /* Focus Ring */
-  --ring: oklch(0.62 0.21 255);
+  /* Focus */
+  --ring: #0238d2;
 
   /* Charts */
-  --chart-1: oklch(0.62 0.21 255);
-  --chart-2: oklch(0.78 0.17 75);
+  --chart-1: #0238d2;
+  --chart-2: #f85c05;
   --chart-3: oklch(0.65 0.18 155);
   --chart-4: oklch(0.65 0.2 300);
-  --chart-5: oklch(0.65 0.2 25);
+  --chart-5: oklch(0.64 0.21 25);
 
   /* Sidebar */
   --sidebar: oklch(0.17 0.03 250);
   --sidebar-foreground: oklch(0.95 0.01 250);
-  --sidebar-primary: oklch(0.62 0.21 255);
-  --sidebar-primary-foreground: oklch(0.98 0.01 250);
-  --sidebar-accent: oklch(0.24 0.05 255);
-  --sidebar-accent-foreground: oklch(0.82 0.1 255);
+  --sidebar-primary: #0238d2;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: oklch(0.235 0.045 255);
+  --sidebar-accent-foreground: #ffffff;
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.62 0.21 255);
+  --sidebar-ring: #0238d2;
 }
 
-/* =================================
-   Common Base Styles
-================================= */
+/* =========================================
+   Base Styles
+========================================= */
 
 @layer base {
   * {
@@ -196,27 +197,119 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
 }
 
+/* =========================================
+   FixItNow — Card Utilities
+========================================= */
+
+@layer utilities {
+  .app-card {
+    border-radius: var(--radius);
+  }
+
+  .app-card-sm {
+    border-radius: calc(var(--radius) - 0.25rem);
+  }
+
+  .app-card-lg {
+    border-radius: calc(var(--radius) + 0.25rem);
+  }
+}
+
+/* =========================================
+   FixItNow — Button Utilities
+========================================= */
 
 @utility btn-primary {
-  @apply inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex h-10 items-center justify-center
+    rounded-xl
+    bg-primary
+    px-4 py-2
+    text-sm font-medium
+    text-primary-foreground
+    shadow-sm
+    transition-all duration-200
+    hover:bg-primary/90
+    hover:shadow-md
+    focus-visible:outline-none
+    focus-visible:ring-2
+    focus-visible:ring-ring
+    disabled:pointer-events-none
+    disabled:opacity-50;
 }
 
 @utility btn-secondary {
-  @apply inline-flex h-10 items-center justify-center rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground shadow-sm transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex h-10 items-center justify-center
+    rounded-xl
+    bg-secondary
+    px-4 py-2
+    text-sm font-medium
+    text-secondary-foreground
+    shadow-sm
+    transition-all duration-200
+    hover:bg-secondary/80
+    hover:shadow-md
+    focus-visible:outline-none
+    focus-visible:ring-2
+    focus-visible:ring-ring
+    disabled:pointer-events-none
+    disabled:opacity-50;
 }
 
 @utility btn-outline {
-  @apply inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex h-10 items-center justify-center
+    rounded-xl
+    border border-border
+    bg-background
+    px-4 py-2
+    text-sm font-medium
+    text-foreground
+    shadow-sm
+    transition-all duration-200
+    hover:border-primary/30
+    hover:bg-primary/5
+    hover:text-primary
+    hover:shadow-sm
+    focus-visible:outline-none
+    focus-visible:ring-2
+    focus-visible:ring-ring
+    disabled:pointer-events-none
+    disabled:opacity-50;
 }
 
 @utility btn-danger {
-  @apply inline-flex h-10 items-center justify-center rounded-md bg-destructive px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-destructive/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex h-10 items-center justify-center
+    rounded-xl
+    bg-destructive
+    px-4 py-2
+    text-sm font-medium
+    text-white
+    shadow-sm
+    transition-all duration-200
+    hover:bg-destructive/90
+    hover:shadow-md
+    focus-visible:outline-none
+    focus-visible:ring-2
+    focus-visible:ring-ring
+    disabled:pointer-events-none
+    disabled:opacity-50;
 }
 
 @utility btn-ghost {
-  @apply inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex h-10 items-center justify-center
+    rounded-xl
+    px-4 py-2
+    text-sm font-medium
+    text-foreground
+    transition-all duration-200
+    hover:bg-muted
+    hover:text-foreground
+    focus-visible:outline-none
+    focus-visible:ring-2
+    focus-visible:ring-ring
+    disabled:pointer-events-none
+    disabled:opacity-50;
 }

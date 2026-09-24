@@ -3,30 +3,40 @@ import { axiosInstance } from "@/lib/axios";
 export interface UpdateUserProfilePayload {
   name?: string;
   phone?: string;
+
+  divisionId?: string;
+  districtId?: string;
+  upazilaId?: string;
+  villageOrArea?: string;
+
   address?: string;
   city?: string;
   postalCode?: string;
 }
 
+// Update user profile
 export const updateUserProfile = async (
-  payload: UpdateUserProfilePayload
+  payload: UpdateUserProfilePayload,
 ) => {
   const { data } = await axiosInstance.patch(
     "/users/profile",
-    payload
+    payload,
   );
 
   return data.data;
 };
 
-export const updateProfileImage = async (file: File) => {
+// Update profile image
+export const updateProfileImage = async (
+  file: File,
+) => {
   const formData = new FormData();
 
   formData.append("profileImg", file);
 
   const { data } = await axiosInstance.patch(
     "/users/profile/image",
-    formData
+    formData,
   );
 
   return data.data;

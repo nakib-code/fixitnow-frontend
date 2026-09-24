@@ -7,16 +7,12 @@ import { getServices } from "@/services/services/service.api";
 
 export const useServices = (
   search?: string,
-  category?: string
+  category?: string,
 ) => {
   return useQuery<Service[]>({
     queryKey: ["services", search, category],
-
-    queryFn: () =>
-      getServices(search, category),
-
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
-
+    queryFn: () => getServices(search, category),
+    staleTime: 1000 * 60 * 5,
     enabled: true,
   });
 };

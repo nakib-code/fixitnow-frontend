@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
-import { Wrench } from "lucide-react";
+
 import { ICategory } from "@/types/category";
+import CategoryImage from "./CategoryImage";
+
 
 type Props = {
   category: ICategory;
@@ -11,16 +15,18 @@ export default function CategoryCard({
 }: Props) {
   return (
     <Link
-      href={`/services?category=${category.id}`}
-      className="group rounded-xl border bg-white p-6 transition hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg"
+      href={`/services?category=${encodeURIComponent(category.id)}`}
+      className="app-card group block border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
     >
       <div className="flex justify-center">
-        <div className="rounded-full bg-blue-100 p-4">
-          <Wrench className="h-8 w-8 text-blue-600" />
-        </div>
+        <CategoryImage
+          src={category.icon}
+          alt={category.name}
+          size="lg"
+        />
       </div>
 
-      <h3 className="mt-4 text-center text-lg font-semibold">
+      <h3 className="mt-4 text-center text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
         {category.name}
       </h3>
     </Link>

@@ -2,7 +2,7 @@
 
 import ServicesFilter from "@/components/services/ServicesFilter";
 import ServiceCard from "@/components/services/ServiceCard";
-import { useServices } from "@/hooks/use-services";
+import { useServices } from "@/hooks/services/use-services";
 
 interface ServicesPageContentProps {
   search: string;

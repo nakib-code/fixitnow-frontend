@@ -9,6 +9,7 @@ import {
   UserRound,
   Wrench,
 } from "lucide-react";
+
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -134,7 +135,7 @@ export default function HowItWorksPage() {
               HOW IT WORKS
             </p>
 
-            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Get your service in 3 simple steps
             </h2>
 
@@ -150,7 +151,7 @@ export default function HowItWorksPage() {
               return (
                 <div
                   key={step.number}
-                  className="group relative rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+                  className="app-card group relative border border-border/70 bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -162,7 +163,7 @@ export default function HowItWorksPage() {
                     </span>
                   </div>
 
-                  <h3 className="mt-6 text-xl font-semibold">
+                  <h3 className="mt-6 text-xl font-semibold text-foreground">
                     {step.title}
                   </h3>
 
@@ -184,7 +185,7 @@ export default function HowItWorksPage() {
               BUILT FOR EVERYONE
             </p>
 
-            <h2 className="mt-2 text-3xl font-bold sm:text-4xl">
+            <h2 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">
               A better experience for everyone
             </h2>
 
@@ -196,12 +197,12 @@ export default function HowItWorksPage() {
 
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             {/* Customer */}
-            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-sm sm:p-8">
+            <div className="app-card border border-border/70 bg-card p-6 shadow-sm sm:p-8">
               <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <UserRound className="size-6" />
               </div>
 
-              <h3 className="mt-5 text-2xl font-bold">
+              <h3 className="mt-5 text-2xl font-bold text-foreground">
                 For Customers
               </h3>
 
@@ -217,7 +218,9 @@ export default function HowItWorksPage() {
                       {index + 1}
                     </div>
 
-                    <p className="text-sm font-medium">{item}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {item}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -231,12 +234,12 @@ export default function HowItWorksPage() {
             </div>
 
             {/* Technician */}
-            <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-sm sm:p-8">
-              <div className="flex size-12 items-center justify-center rounded-xl bg-accent/20 text-accent-foreground">
+            <div className="app-card border border-border/70 bg-card p-6 shadow-sm sm:p-8">
+              <div className="flex size-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
                 <Wrench className="size-6" />
               </div>
 
-              <h3 className="mt-5 text-2xl font-bold">
+              <h3 className="mt-5 text-2xl font-bold text-foreground">
                 For Technicians
               </h3>
 
@@ -248,17 +251,19 @@ export default function HowItWorksPage() {
               <div className="mt-6 space-y-4">
                 {technicianSteps.map((item, index) => (
                   <div key={item} className="flex items-start gap-3">
-                    <div className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-accent/20 text-xs font-bold text-accent-foreground">
+                    <div className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent">
                       {index + 1}
                     </div>
 
-                    <p className="text-sm font-medium">{item}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {item}
+                    </p>
                   </div>
                 ))}
               </div>
 
               <Link href="/auth/register" className="mt-7 inline-block">
-                <Button className="rounded-xl">
+                <Button className="rounded-xl bg-accent text-accent-foreground hover:bg-accent/90">
                   Join as a Technician
                   <ArrowRight className="ml-2 size-4" />
                 </Button>
@@ -276,7 +281,7 @@ export default function HowItWorksPage() {
               WHY FIXITNOW
             </p>
 
-            <h2 className="mt-2 text-3xl font-bold sm:text-4xl">
+            <h2 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">
               Everything you need
             </h2>
 
@@ -293,13 +298,13 @@ export default function HowItWorksPage() {
               return (
                 <div
                   key={benefit.title}
-                  className="rounded-2xl border border-border/70 bg-card p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                  className="app-card border border-border/70 bg-card p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <Icon className="size-6" />
                   </div>
 
-                  <h3 className="mt-5 font-semibold">
+                  <h3 className="mt-5 font-semibold text-foreground">
                     {benefit.title}
                   </h3>
 
@@ -316,8 +321,9 @@ export default function HowItWorksPage() {
       {/* CTA */}
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl bg-primary px-6 py-12 text-center text-primary-foreground shadow-xl sm:px-10 sm:py-16">
+          <div className="app-card relative overflow-hidden bg-primary px-6 py-12 text-center text-primary-foreground shadow-xl sm:px-10 sm:py-16">
             <div className="absolute -right-20 -top-20 size-56 rounded-full bg-white/10 blur-2xl" />
+
             <div className="absolute -bottom-20 -left-20 size-56 rounded-full bg-white/10 blur-2xl" />
 
             <div className="relative">

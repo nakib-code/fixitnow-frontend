@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Menu, Wrench } from "lucide-react";
+import { ArrowRight, Menu } from "lucide-react";
 
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { Button } from "@/components/ui/button";
 
 import {
   Sheet,
@@ -13,43 +14,52 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { Button } from "@/components/ui/button";
+import { useCurrentUser } from "@/hooks/auth/use-current-user";
 import { ThemeToggle } from "../theme/theme-toggle";
 
-export default function Navbar() {
-  const { user, isLoading } = useCurrentUser();
+const navLinks = [
+  {
+    title: "Home",
+    href: "/",
+  },
+  {
+    title: "Services",
+    href: "/services",
+  },
+  {
+    title: "Technicians",
+    href: "/technicians",
+  },
+  {
+    title: "How It Works",
+    href: "/how-it-works",
+  },
+];
 
-  const navLinks = [
-    {
-      title: "Home",
-      href: "/",
-    },
-    {
-      title: "Services",
-      href: "/services",
-    },
-    {
-      title: "How It Works",
-      href: "/how-it-works",
-    },
-  ];
+export default function Navbar() {
+  const { user } = useCurrentUser();
+
+  const dashboardHref = user
+    ? `/dashboard/${user.role.toLowerCase()}`
+    : "/";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5"
+          className="group flex shrink-0 items-center"
           aria-label="FixItNow Home"
         >
-          <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform duration-200 group-hover:scale-105">
-            <Wrench className="size-5" />
-          </div>
-
-          <span className="text-xl font-bold tracking-tight text-foreground">
-            FixIt<span className="text-primary">Now</span>
-          </span>
+          <Image
+            src="/logo.png"
+            alt="FixItNow"
+            width={400}
+            height={400}
+            priority
+            className="size-50 object-contain transition-transform duration-200 group-hover:scale-105"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -58,7 +68,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-primary/8 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {link.title}
             </Link>
@@ -69,11 +79,11 @@ export default function Navbar() {
         <div className="hidden items-center gap-2 md:flex">
           <ThemeToggle />
 
-          {isLoading ? null : user ? (
-            <Link href={`/dashboard/${user.role.toLowerCase()}`}>
-              <Button className="gap-2 rounded-xl px-5">
+          {user ? (
+            <Link href={dashboardHref}>
+              <Button className="group h-10 gap-2 rounded-xl bg-primary px-5 font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md">
                 Dashboard
-                <ArrowRight className="size-4" />
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
               </Button>
             </Link>
           ) : (
@@ -81,15 +91,15 @@ export default function Navbar() {
               <Link href="/auth/login">
                 <Button
                   variant="ghost"
-                  className="rounded-xl px-4 text-sm font-medium"
+                  className="h-10 rounded-xl px-4 font-medium text-muted-foreground transition-all duration-200 hover:bg-muted hover:text-foreground"
                 >
                   Login
                 </Button>
               </Link>
 
               <Link href="/auth/register">
-                <Button className="rounded-xl px-5 shadow-sm">
-                  Register
+                <Button className="h-10 rounded-xl bg-primary px-5 font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md">
+                  Get Started
                 </Button>
               </Link>
             </>
@@ -102,7 +112,7 @@ export default function Navbar() {
 
           <Sheet>
             <SheetTrigger
-              className="flex size-10 items-center justify-center rounded-xl text-foreground transition-colors hover:bg-muted"
+              className="flex size-10 items-center justify-center rounded-xl text-foreground transition-all duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Open navigation menu"
             >
               <Menu className="size-5" />
@@ -110,71 +120,78 @@ export default function Navbar() {
 
             <SheetContent
               side="right"
-              className="w-[85%] max-w-sm border-l border-border bg-background px-0"
+              className="w-[88%] max-w-sm border-l border-border bg-background px-0"
             >
+              {/* Mobile Header */}
               <SheetHeader className="border-b border-border/60 px-5 py-5">
-                {/* Logo */}
                 <Link
                   href="/"
-                  className="flex items-center gap-2.5"
+                  className="flex items-center"
                   aria-label="FixItNow Home"
                 >
-                  <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                    <Wrench className="size-5" />
-                  </div>
-
-                  <span className="text-xl font-bold tracking-tight text-foreground">
-                    FixIt<span className="text-primary">Now</span>
-                  </span>
+                  <Image
+                    src="/logo.png"
+                    alt="FixItNow"
+                    width={48}
+                    height={48}
+                    className="size-12 object-contain"
+                  />
                 </Link>
 
-                {/* Accessible Sheet Title */}
                 <SheetTitle className="sr-only">
                   FixItNow Navigation Menu
                 </SheetTitle>
               </SheetHeader>
 
+              {/* Mobile Content */}
               <div className="flex flex-col px-5 py-6">
-                {/* Navigation */}
+                {/* Navigation Links */}
                 <nav className="flex flex-col gap-1">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="flex min-h-12 items-center rounded-xl px-4 text-sm font-medium text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+                      className="flex min-h-12 items-center rounded-xl px-4 text-sm font-medium text-foreground transition-all duration-200 hover:bg-primary/8 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {link.title}
                     </Link>
                   ))}
                 </nav>
 
+                {/* Divider */}
                 <div className="my-6 h-px bg-border" />
 
                 {/* Authentication */}
-                {isLoading ? null : user ? (
+                {user ? (
                   <Link
-                    href={`/dashboard/${user.role.toLowerCase()}`}
+                    href={dashboardHref}
                     className="w-full"
                   >
-                    <Button className="h-12 w-full gap-2 rounded-xl">
+                    <Button className="group h-12 w-full gap-2 rounded-xl bg-primary font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md">
                       Dashboard
-                      <ArrowRight className="size-4" />
+                      <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                     </Button>
                   </Link>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    <Link href="/auth/login" className="w-full">
+                    <Link
+                      href="/auth/login"
+                      className="w-full"
+                    >
                       <Button
                         variant="outline"
-                        className="h-12 w-full rounded-xl"
+                        className="h-12 w-full rounded-xl border-border font-medium transition-all duration-200 hover:bg-muted"
                       >
                         Login
                       </Button>
                     </Link>
 
-                    <Link href="/auth/register" className="w-full">
-                      <Button className="h-12 w-full rounded-xl">
-                        Register
+                    <Link
+                      href="/auth/register"
+                      className="w-full"
+                    >
+                      <Button className="h-12 w-full rounded-xl bg-primary font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md">
+                        Get Started
                       </Button>
                     </Link>
                   </div>

@@ -11,7 +11,7 @@ import {
   Wrench,
 } from "lucide-react";
 
-import { useSingleService } from "@/hooks/use-single-service";
+import { useSingleService } from "@/hooks/services/use-single-service";
 import BookingDialog from "@/components/booking/BookingDialog";
 
 export default function ServiceDetails({
@@ -19,7 +19,10 @@ export default function ServiceDetails({
 }: {
   id: string;
 }) {
-  const { data: service, isLoading } = useSingleService(id);
+  const {
+    data: service,
+    isLoading,
+  } = useSingleService(id);
 
   if (isLoading) {
     return (
@@ -27,7 +30,9 @@ export default function ServiceDetails({
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="animate-pulse space-y-6">
             <div className="h-8 w-2/3 rounded-lg bg-muted" />
+
             <div className="h-20 w-full rounded-2xl bg-muted" />
+
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="h-24 rounded-2xl bg-muted" />
               <div className="h-24 rounded-2xl bg-muted" />
@@ -58,6 +63,19 @@ export default function ServiceDetails({
     );
   }
 
+  // Technician
+  const technician = service.technician?.user;
+
+  // Full location
+  const location = [
+    technician?.villageOrArea,
+    technician?.upazila?.name,
+    technician?.district?.name,
+    technician?.division?.name,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
   return (
     <section className="bg-background py-10 sm:py-14">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -70,13 +88,16 @@ export default function ServiceDetails({
                 {/* Category */}
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
                   <Wrench className="size-3.5" />
-                  {service.category.name}
+
+                  {service.category?.name}
                 </div>
 
+                {/* Title */}
                 <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                   {service.title}
                 </h1>
 
+                {/* Description */}
                 <p className="mt-4 text-sm leading-7 text-muted-foreground sm:text-base">
                   {service.description}
                 </p>
@@ -146,8 +167,8 @@ export default function ServiceDetails({
                   Location
                 </p>
 
-                <p className="mt-1 truncate font-semibold text-foreground">
-                  {service.technician.location}
+                <p className="mt-1 line-clamp-2 font-semibold text-foreground">
+                  {location || "Location not provided"}
                 </p>
               </div>
 
@@ -189,16 +210,26 @@ export default function ServiceDetails({
                 <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                   {/* Profile */}
                   <div className="flex items-center gap-4">
-                    <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-primary-foreground">
-                      {service.technician.user.name
-                        .charAt(0)
-                        .toUpperCase()}
-                    </div>
+                    {technician?.profileImg ? (
+                      <div className="relative size-14 shrink-0 overflow-hidden rounded-2xl">
+                        <img
+                          src={technician.profileImg}
+                          alt={technician.name}
+                          className="size-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-primary-foreground">
+                        {technician?.name
+                          ?.charAt(0)
+                          .toUpperCase()}
+                      </div>
+                    )}
 
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="font-bold text-foreground">
-                          {service.technician.user.name}
+                          {technician?.name}
                         </h3>
 
                         <CheckCircle2 className="size-4 text-primary" />
@@ -220,22 +251,77 @@ export default function ServiceDetails({
 
                 {/* Technician Details */}
                 <div className="mt-6 grid gap-3 border-t border-border pt-5 sm:grid-cols-2">
+                  {/* Email */}
                   <div className="flex items-center gap-3">
                     <Mail className="size-4 text-muted-foreground" />
 
                     <span className="truncate text-sm text-muted-foreground">
-                      {service.technician.user.email}
+                      {technician?.email || "Email not provided"}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <MapPin className="size-4 text-muted-foreground" />
+                  {/* Location */}
+                  <div className="flex items-start gap-3">
+                    <MapPin className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
 
                     <span className="text-sm text-muted-foreground">
-                      {service.technician.location}
+                      {location || "Location not provided"}
                     </span>
                   </div>
                 </div>
+
+                {/* Location Breakdown */}
+                {location && (
+                  <div className="mt-5 grid gap-3 border-t border-border pt-5 sm:grid-cols-2 lg:grid-cols-4">
+                    {technician?.villageOrArea && (
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          Village / Area
+                        </p>
+
+                        <p className="mt-1 text-sm font-medium text-foreground">
+                          {technician.villageOrArea}
+                        </p>
+                      </div>
+                    )}
+
+                    {technician?.upazila?.name && (
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          Upazila / Thana
+                        </p>
+
+                        <p className="mt-1 text-sm font-medium text-foreground">
+                          {technician.upazila.name}
+                        </p>
+                      </div>
+                    )}
+
+                    {technician?.district?.name && (
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          District
+                        </p>
+
+                        <p className="mt-1 text-sm font-medium text-foreground">
+                          {technician.district.name}
+                        </p>
+                      </div>
+                    )}
+
+                    {technician?.division?.name && (
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          Division
+                        </p>
+
+                        <p className="mt-1 text-sm font-medium text-foreground">
+                          {technician.division.name}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

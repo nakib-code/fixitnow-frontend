@@ -10,29 +10,40 @@ import {
   Wrench,
 } from "lucide-react";
 
+import {
+  getMyServices,
+  getTechnicianBookings,
+} from "@/services/services/service.api";
 
-import { getMyServices, getTechnicianBookings } from "@/services/services/service.api";
 import RecentBookings from "@/app/dashboard/technician/_components/RecentBookings";
 import RecentServices from "@/app/dashboard/technician/_components/RecentServices";
+
 import DashboardCard from "@/components/admin/dashboard/DashboardCard";
 
-
+import type { Service } from "@/types/service";
+import { TechnicianBooking } from "@/types/technician";
 
 const TechnicianDashboard = () => {
-  const { data: services = [], isLoading: servicesLoading } = useQuery({
+  const {
+    data: services = [],
+    isLoading: servicesLoading,
+  } = useQuery<Service[]>({
     queryKey: ["my-services"],
     queryFn: getMyServices,
   });
 
-  const { data: bookings = [], isLoading: bookingsLoading } = useQuery({
+  const {
+    data: bookings = [],
+    isLoading: bookingsLoading,
+  } = useQuery<TechnicianBooking[]>({
     queryKey: ["technician-bookings"],
     queryFn: getTechnicianBookings,
   });
 
   if (servicesLoading || bookingsLoading) {
     return (
-      <div className="flex h-64 items-center justify-center">
-        Loading...
+      <div className="flex min-h-[400px] items-center justify-center">
+        <LoaderCircle className="size-7 animate-spin text-primary" />
       </div>
     );
   }
@@ -40,40 +51,41 @@ const TechnicianDashboard = () => {
   const totalServices = services.length;
 
   const availableServices = services.filter(
-    (item: any) => item.isAvailable
+    (service) => service.isAvailable
   ).length;
 
   const totalBookings = bookings.length;
 
   const pendingBookings = bookings.filter(
-    (item: any) => item.status === "PENDING"
+    (booking) => booking.status === "REQUESTED"
   ).length;
 
   const inProgressBookings = bookings.filter(
-    (item: any) => item.status === "IN_PROGRESS"
+    (booking) => booking.status === "IN_PROGRESS"
   ).length;
 
   const completedBookings = bookings.filter(
-    (item: any) => item.status === "COMPLETED"
+    (booking) => booking.status === "COMPLETED"
   ).length;
 
   const recentBookings = bookings.slice(0, 5);
-
   const recentServices = services.slice(0, 5);
 
   return (
     <div className="space-y-8">
+      {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">
-          Welcome Back 👋
+        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          Welcome Back
         </h1>
 
-        <p className="text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
           Here&apos;s what&apos;s happening today.
         </p>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {/* Statistics */}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <DashboardCard
           title="Total Services"
           value={totalServices}
@@ -111,8 +123,10 @@ const TechnicianDashboard = () => {
         />
       </div>
 
+      {/* Recent Bookings */}
       <RecentBookings bookings={recentBookings} />
 
+      {/* Recent Services */}
       <RecentServices services={recentServices} />
     </div>
   );

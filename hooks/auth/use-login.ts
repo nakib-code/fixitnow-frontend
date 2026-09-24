@@ -12,24 +12,18 @@ export const useLogin = () => {
     mutationFn: loginUser,
 
     onSuccess: (data) => {
+      const user = data?.data?.user;
+
+      if (user) {
+        queryClient.setQueryData(["current-user"], user);
+      }
+
       toast.success("Login successful");
-
-      // Current user refresh
-      queryClient.invalidateQueries({
-        queryKey: ["current-user"],
-      });
-
-      // চাইলে এখানে user cache set করতে পারো
-      queryClient.setQueryData(
-        ["current-user"],
-        data.data.user
-      );
     },
 
     onError: (error: any) => {
       toast.error(
-        error?.response?.data?.message ??
-          "Login failed"
+        error?.response?.data?.message || "Login failed"
       );
     },
   });

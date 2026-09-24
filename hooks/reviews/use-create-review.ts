@@ -12,26 +12,30 @@ export const useCreateReview = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: TCreateReview) =>
-      createReview(payload),
+    mutationFn: (payload: TCreateReview) => createReview(payload),
 
     onSuccess: () => {
       toast.success("Review submitted successfully.");
 
-      // Customer booking list update
+      // Update customer booking list
       queryClient.invalidateQueries({
         queryKey: ["my-bookings"],
       });
 
-      // যদি admin review list থাকে
+      // Update admin booking list
       queryClient.invalidateQueries({
         queryKey: ["admin-bookings"],
+      });
+
+      // Update public reviews
+      queryClient.invalidateQueries({
+        queryKey: ["reviews"],
       });
     },
 
     onError: (error: any) => {
       toast.error(
-        error?.response?.data?.message ??
+        error?.response?.data?.message ||
           "Failed to submit review"
       );
     },

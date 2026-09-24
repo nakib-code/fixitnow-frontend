@@ -1,49 +1,51 @@
 export default function CustomerDashboard() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold">
-        Customer Dashboard
-      </h1>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          Customer Dashboard
+        </h1>
 
-      <p className="mt-2 text-slate-500">
-        Manage your services, bookings and profile.
-      </p>
+        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+          Manage your services, bookings and profile.
+        </p>
+      </div>
 
-
-      <div className="mt-6 grid gap-5 md:grid-cols-3">
-
-        <div className="rounded-xl bg-white p-6 shadow">
-          <h2 className="font-semibold">
+      {/* Stats */}
+      <div className="grid gap-4 md:grid-cols-3">
+        {/* Total Bookings */}
+        <div className="app-card border border-border bg-card p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
+          <h2 className="text-sm font-medium text-muted-foreground">
             Total Bookings
           </h2>
 
-          <p className="mt-3 text-3xl font-bold">
+          <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             0
           </p>
         </div>
 
-
-        <div className="rounded-xl bg-white p-6 shadow">
-          <h2 className="font-semibold">
+        {/* Completed Services */}
+        <div className="app-card border border-border bg-card p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
+          <h2 className="text-sm font-medium text-muted-foreground">
             Completed Services
           </h2>
 
-          <p className="mt-3 text-3xl font-bold">
+          <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             0
           </p>
         </div>
 
-
-        <div className="rounded-xl bg-white p-6 shadow">
-          <h2 className="font-semibold">
+        {/* Reviews */}
+        <div className="app-card border border-border bg-card p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
+          <h2 className="text-sm font-medium text-muted-foreground">
             Reviews
           </h2>
 
-          <p className="mt-3 text-3xl font-bold">
+          <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             0
           </p>
         </div>
-
       </div>
     </div>
   );

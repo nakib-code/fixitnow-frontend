@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useUpdateCategory } from "@/hooks/use-update-category";
+import { useUpdateCategory } from "@/hooks/categories/use-update-category";
 
 type Category = {
   id: string;
@@ -44,6 +43,7 @@ const UpdateCategoryDialog = ({ category }: Props) => {
     register,
     handleSubmit,
     reset,
+    formState: { errors },
   } = useForm<FormValues>();
 
   useEffect(() => {
@@ -68,17 +68,17 @@ const UpdateCategoryDialog = ({ category }: Props) => {
       {
         id: category.id,
         payload: {
-          name: data.name,
-          description: data.description,
+          name: data.name.trim(),
+          description: data.description?.trim(),
           icon: file,
         },
       },
       {
         onSuccess: () => {
-          setOpen(false);
           reset();
+          setOpen(false);
         },
-      }
+      },
     );
   };
 
@@ -89,55 +89,110 @@ const UpdateCategoryDialog = ({ category }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        render={<Button className="btn-outline" />}
+        render={
+          <Button
+            variant="outline"
+            className="h-9 rounded-xl px-4 font-medium"
+          />
+        }
       >
         Edit
       </DialogTrigger>
-
-      <DialogContent>
+      <DialogContent className="w-[calc(100%-2rem)] max-w-md rounded-2xl sm:w-full">
         <DialogHeader>
-          <DialogTitle>Update Category</DialogTitle>
+          <DialogTitle className="text-xl font-bold">
+            Update Category
+          </DialogTitle>
         </DialogHeader>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4"
-        >
-          <Input
-            placeholder="Category Name"
-            {...register("name", {
-              required: true,
-            })}
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Name */}
+          <div className="space-y-2">
+            <label
+              htmlFor={`category-name-${category.id}`}
+              className="text-sm font-medium text-foreground"
+            >
+              Category Name
+            </label>
 
+            <Input
+              id={`category-name-${category.id}`}
+              placeholder="e.g. Plumbing"
+              {...register("name", {
+                required: "Category name is required",
+                validate: (value) =>
+                  value.trim().length > 0 || "Category name is required",
+              })}
+            />
+
+            {errors.name && (
+              <p className="text-xs text-destructive">{errors.name.message}</p>
+            )}
+          </div>
+
+          {/* Current Image */}
           {category.icon && (
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Current Icon
+              <p className="text-sm font-medium text-foreground">
+                Current Image
               </p>
 
-              <img
-                src={category.icon}
-                alt={category.name}
-                className="h-16 w-16 rounded-md object-cover"
-              />
+              <div className="flex size-20 items-center justify-center overflow-hidden rounded-xl border border-border bg-muted">
+                <img
+                  src={category.icon}
+                  alt={category.name}
+                  className="size-full object-cover"
+                />
+              </div>
             </div>
           )}
 
-          <Input
-            type="file"
-            accept="image/*"
-            {...register("icon")}
-          />
+          {/* New Image */}
+          <div className="space-y-2">
+            <label
+              htmlFor={`category-icon-${category.id}`}
+              className="text-sm font-medium text-foreground"
+            >
+              {category.icon ? "Replace Image" : "Category Image"}
+            </label>
 
-          <Input
-            placeholder="Description"
-            {...register("description")}
-          />
+            <Input
+              id={`category-icon-${category.id}`}
+              type="file"
+              accept="image/*"
+              {...register("icon")}
+              className="cursor-pointer"
+            />
 
+            <p className="text-xs text-muted-foreground">
+              {category.icon
+                ? "Leave empty to keep the current image."
+                : "Upload an image for this category."}
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <label
+              htmlFor={`category-description-${category.id}`}
+              className="text-sm font-medium text-foreground"
+            >
+              Description
+              <span className="ml-1 text-muted-foreground">(Optional)</span>
+            </label>
+
+            <textarea
+              id={`category-description-${category.id}`}
+              placeholder="Write a short description..."
+              rows={4}
+              {...register("description")}
+            />
+          </div>
+
+          {/* Submit */}
           <Button
             type="submit"
-            className="btn-primary w-full"
+            className="h-11 w-full rounded-xl bg-primary font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md"
             disabled={isPending}
           >
             {isPending ? "Updating..." : "Update Category"}

@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useCreateCategory } from "@/hooks/use-create-category";
+import { useCreateCategory } from "@/hooks/categories/use-create-category";
 
 type FormValues = {
   name: string;
@@ -31,6 +30,7 @@ const CreateCategoryDialog = () => {
     register,
     handleSubmit,
     reset,
+    formState: { errors },
   } = useForm<FormValues>();
 
   const onSubmit = (data: FormValues) => {
@@ -38,8 +38,8 @@ const CreateCategoryDialog = () => {
 
     mutate(
       {
-        name: data.name,
-        description: data.description,
+        name: data.name.trim(),
+        description: data.description?.trim(),
         icon: file,
       },
       {
@@ -47,59 +47,102 @@ const CreateCategoryDialog = () => {
           reset();
           setOpen(false);
         },
-      }
+      },
     );
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        render={<Button className="btn-primary" />}
+        render={
+          <Button
+            variant="outline"
+            className="h-9 rounded-xl px-4 font-medium"
+          />
+        }
       >
         Add Category
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="w-[calc(100%-2rem)] max-w-md rounded-2xl sm:w-full">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-xl font-bold">
             Create Category
           </DialogTitle>
         </DialogHeader>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Name */}
-          <Input
-            placeholder="Category Name"
-            {...register("name", {
-              required: true,
-            })}
-          />
+          <div className="space-y-2">
+            <label
+              htmlFor="category-name"
+              className="text-sm font-medium text-foreground"
+            >
+              Category Name
+            </label>
+
+            <Input
+              id="category-name"
+              placeholder="e.g. Plumbing"
+              {...register("name", {
+                required: "Category name is required",
+                validate: (value) =>
+                  value.trim().length > 0 || "Category name is required",
+              })}
+            />
+
+            {errors.name && (
+              <p className="text-xs text-destructive">{errors.name.message}</p>
+            )}
+          </div>
 
           {/* Icon */}
-          <Input
-            type="file"
-            accept="image/*"
-            {...register("icon")}
-          />
+          <div className="space-y-2">
+            <label
+              htmlFor="category-icon"
+              className="text-sm font-medium text-foreground"
+            >
+              Category Image
+            </label>
+
+            <Input
+              id="category-icon"
+              type="file"
+              accept="image/*"
+              {...register("icon")}
+              className="cursor-pointer"
+            />
+
+            <p className="text-xs text-muted-foreground">
+              Upload an image for this category.
+            </p>
+          </div>
 
           {/* Description */}
-          <Input
-            placeholder="Description (Optional)"
-            {...register("description")}
-          />
+          <div className="space-y-2">
+            <label
+              htmlFor="category-description"
+              className="text-sm font-medium text-foreground"
+            >
+              Description
+              <span className="ml-1 text-muted-foreground">(Optional)</span>
+            </label>
+
+            <textarea
+              id="category-description"
+              placeholder="Write a short description..."
+              rows={4}
+              {...register("description")}
+            />
+          </div>
 
           {/* Submit */}
           <Button
             type="submit"
-            className="btn-primary w-full"
+            className="h-11 w-full rounded-xl bg-primary font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md"
             disabled={isPending}
           >
-            {isPending
-              ? "Creating..."
-              : "Create Category"}
+            {isPending ? "Creating..." : "Create Category"}
           </Button>
         </form>
       </DialogContent>

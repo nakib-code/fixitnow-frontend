@@ -16,7 +16,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { useDeleteCategory } from "@/hooks/use-delete-category";
+import { useDeleteCategory } from "@/hooks/categories/use-delete-category";
 
 interface Props {
   id: string;
